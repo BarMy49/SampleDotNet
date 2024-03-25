@@ -20,6 +20,6 @@ namespace SampleDotNet.Models
         [MaxLength(128)]
         public string Password { get; set; }
         public virtual ICollection<Post>? Posts { get; set;}
-        public virtual ICollection<Cummunity>? Cummunities { get; set; }
+        public virtual ICollection<Community>? Communities { get; set; }
     }
 }

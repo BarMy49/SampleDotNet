@@ -10,11 +10,11 @@ namespace SampleDotNet.Data
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Cummunity> Cummunities { get; set;}
+        public DbSet<Community> Communities { get; set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
-                .HasMany(e => e.Cummunities)
+                .HasMany(e => e.Communities)
                 .WithMany(e => e.Users);
             
         }

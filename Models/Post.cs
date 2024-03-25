@@ -17,7 +17,7 @@ namespace SampleDotNet.Models
         [Required]
         public int UserId { get; set; }
         public virtual User User { get; set; }
-        public int CummunityId { get; set; }
-        public virtual Cummunity Cummunity { get; set; }
+        public int CommunityId { get; set; }
+        public virtual Community Community { get; set; }
     }
 }
