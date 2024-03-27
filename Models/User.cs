@@ -15,7 +15,7 @@ namespace SampleDotNet.Models
         public string Email { get; set; }
         [Required]
         [DefaultValue(0)]
-        public int RedditKarma { get; set; }
+        public int Garma { get; set; }
         [Required]
         [MaxLength(128)]
         public string Password { get; set; }

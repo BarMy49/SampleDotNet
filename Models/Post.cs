@@ -13,7 +13,7 @@ namespace SampleDotNet.Models
         public string Picture { get; set; }
         [Required]
         [DefaultValue(1)]
-        public int GoonRatio { get; set; }
+        public int Gratio { get; set; }
         [Required]
         public int UserId { get; set; }
         public virtual User User { get; set; }
