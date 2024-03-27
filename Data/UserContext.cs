@@ -16,7 +16,9 @@ namespace SampleDotNet.Data
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Communities)
                 .WithMany(e => e.Users);
-            
+            modelBuilder.Entity<User>()
+                .Property(e => e.Garma)
+                .HasDefaultValue(0);
         }
     }
 }
