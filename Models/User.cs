@@ -14,7 +14,6 @@ namespace SampleDotNet.Models
         [MaxLength(70)]
         public string Email { get; set; }
         [Required]
-        [DefaultValue(0)]
         public int Garma { get; set; }
         [Required]
         [MaxLength(128)]
