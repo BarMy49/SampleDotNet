@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SampleDotNet.Data;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<SiteDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString
     ("SampleDotNetDB")));
+builder.Services.AddDbContext<SampleDotNetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString
+    ("SampleDotNetContextConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<SampleDotNetContext>();
 
 var app = builder.Build();
 
@@ -29,5 +34,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();

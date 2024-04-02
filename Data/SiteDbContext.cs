@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 namespace SampleDotNet.Data
 {
-    public class SiteDbContext : DbContext
+    public class SiteDbContext : SampleDotNetContext
     {
         public SiteDbContext(DbContextOptions options) : base(options)
         { 

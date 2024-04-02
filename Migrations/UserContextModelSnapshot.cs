@@ -33,7 +33,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("CommunityUser");
+                    b.ToTable("CommunityUser", (string)null);
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Community", b =>
@@ -50,7 +50,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Communities");
+                    b.ToTable("Communities", (string)null);
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
@@ -89,7 +89,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.User", b =>
@@ -122,7 +122,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CommunityUser", b =>
