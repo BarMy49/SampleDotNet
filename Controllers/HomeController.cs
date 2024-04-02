@@ -9,9 +9,9 @@ namespace SampleDotNet.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly UserContext _context;
+        private readonly SiteDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, UserContext context)
+        public HomeController(ILogger<HomeController> logger, SiteDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -31,7 +31,6 @@ namespace SampleDotNet.Controllers
 
         public IActionResult Create()
         {
-
 
             return View();
         }

@@ -10,8 +10,7 @@ namespace SampleDotNet.Models
         [Required]
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Picture { get; set; }
-        [Required]
+        public string? Picture { get; set; }
         [DefaultValue(1)]
         public int Gratio { get; set; }
         [Required]

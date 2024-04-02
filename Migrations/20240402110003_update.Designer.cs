@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SampleDotNet.Data;
 
@@ -10,9 +11,11 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20240402110003_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,11 +72,10 @@ namespace SampleDotNet.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gratio")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.Property<string>("Picture")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -108,7 +110,7 @@ namespace SampleDotNet.Migrations
                     b.Property<int>("Garma")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Nick")
                         .IsRequired()

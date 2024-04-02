@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 namespace SampleDotNet.Data
 {
-    public class UserContext : DbContext
+    public class SiteDbContext : DbContext
     {
-        public UserContext(DbContextOptions options) : base(options)
+        public SiteDbContext(DbContextOptions options) : base(options)
         { 
         
         }
@@ -18,7 +18,10 @@ namespace SampleDotNet.Data
                 .WithMany(e => e.Users);
             modelBuilder.Entity<User>()
                 .Property(e => e.Garma)
-                .HasDefaultValue(0);
+                .HasDefaultValue(1);
+            modelBuilder.Entity<Post>()
+                .Property(e => e.Gratio)
+                .HasDefaultValue(1);
         }
     }
 }
