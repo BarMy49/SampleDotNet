@@ -19,9 +19,7 @@ namespace SampleDotNet.Controllers
 
         public IActionResult Index()
         {
-            var users = _context.Users.ToList();
-            return View(users);
-
+            return View();
         }
 
         public IActionResult Privacy()
