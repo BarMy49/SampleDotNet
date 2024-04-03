@@ -6,17 +6,19 @@ namespace SampleDotNet.Models
     public class Post
     {
         [Required]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string Title { get; set; }
+        [Required]
         public string Description { get; set; }
-        public string? Picture { get; set; }
+        public string? Image { get; set; }
         [DefaultValue(1)]
         public int Gratio { get; set; }
         [Required]
-        public int UserId { get; set; }
-        public virtual User User { get; set; }
-        public int CommunityId { get; set; }
+        public Guid GuserId { get; set; }
+        public virtual Guser Guser { get; set; }
+        [Required]
+        public Guid CommunityId { get; set; }
         public virtual Community Community { get; set; }
     }
 }

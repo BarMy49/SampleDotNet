@@ -8,15 +8,16 @@ namespace SampleDotNet.Data
         { 
         
         }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Guser> Gusers { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Community> Communities { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Guser>()
                 .HasMany(e => e.Communities)
-                .WithMany(e => e.Users);
-            modelBuilder.Entity<User>()
+                .WithMany(e => e.Gusers);
+            modelBuilder.Entity<Guser>()
                 .Property(e => e.Garma)
                 .HasDefaultValue(1);
             modelBuilder.Entity<Post>()

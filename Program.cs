@@ -1,18 +1,26 @@
 using Microsoft.EntityFrameworkCore;
 using SampleDotNet.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMemoryCache();
+builder.Services.AddSession(options =>
+    {
+        options.Cookie.HttpOnly = true;
+    });
 
 builder.Services.AddDbContext<SiteDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString
     ("SampleDotNetDB")));
-builder.Services.AddDbContext<SampleDotNetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString
-    ("SampleDotNetContextConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<SampleDotNetContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+    })
+    .AddEntityFrameworkStores<SiteDbContext>();
 
 var app = builder.Build();
 
@@ -29,7 +37,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

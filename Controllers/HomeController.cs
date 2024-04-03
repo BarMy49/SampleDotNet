@@ -3,6 +3,8 @@ using SampleDotNet.Models;
 using System.Diagnostics;
 using SampleDotNet.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SampleDotNet.Controllers
 {
@@ -21,7 +23,7 @@ namespace SampleDotNet.Controllers
         {
             return View();
         }
-
+        
         public IActionResult Privacy()
         {
             return View();
