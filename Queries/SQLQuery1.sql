@@ -1,1 +1,1 @@
-﻿DROP TABLE USERS;
+﻿select * from [SampleDotNetDB].[dbo].[Communities];

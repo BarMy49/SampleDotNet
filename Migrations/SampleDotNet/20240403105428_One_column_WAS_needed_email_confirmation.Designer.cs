@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SampleDotNet.Data;
 
@@ -10,9 +11,11 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations.SampleDotNet
 {
     [DbContext(typeof(SampleDotNetContext))]
-    partial class SampleDotNetContextModelSnapshot : ModelSnapshot
+    [Migration("20240403105428_One_column_WAS_needed_email_confirmation")]
+    partial class One_column_WAS_needed_email_confirmation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

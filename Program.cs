@@ -15,6 +15,8 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddDbContext<SiteDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString
     ("SampleDotNetDB")));
+builder.Services.AddDbContext<SampleDotNetContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString
+    ("SampleDotNetDB")));
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     {
