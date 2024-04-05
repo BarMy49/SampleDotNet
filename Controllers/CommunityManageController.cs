@@ -20,6 +20,11 @@ namespace SampleDotNet.Controllers
             return View();
         }
 
+        public IActionResult GommunityAdd()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]

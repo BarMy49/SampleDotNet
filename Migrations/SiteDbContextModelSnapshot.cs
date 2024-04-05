@@ -27,14 +27,14 @@ namespace SampleDotNet.Migrations
                     b.Property<Guid>("CommunitiesId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GusersId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("GusersId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CommunitiesId", "GusersId");
 
                     b.HasIndex("GusersId");
 
-                    b.ToTable("CommunityGuser", (string)null);
+                    b.ToTable("CommunityGuser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -101,6 +101,11 @@ namespace SampleDotNet.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -152,6 +157,10 @@ namespace SampleDotNet.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -182,12 +191,10 @@ namespace SampleDotNet.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -224,12 +231,10 @@ namespace SampleDotNet.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -251,38 +256,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Communities", (string)null);
-                });
-
-            modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("GEmail")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<string>("GNick")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("GPassword")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("Garma")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gusers", (string)null);
+                    b.ToTable("Communities");
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
@@ -303,8 +277,9 @@ namespace SampleDotNet.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<Guid>("GuserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("GuserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
@@ -319,7 +294,19 @@ namespace SampleDotNet.Migrations
 
                     b.HasIndex("GuserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<int>("Garma")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.HasDiscriminator().HasValue("Guser");
                 });
 
             modelBuilder.Entity("CommunityGuser", b =>

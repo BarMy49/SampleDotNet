@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SampleDotNet.Models
 {
@@ -15,7 +16,7 @@ namespace SampleDotNet.Models
         [DefaultValue(1)]
         public int Gratio { get; set; }
         [Required]
-        public Guid GuserId { get; set; }
+        [ForeignKey("GuserId")]
         public virtual Guser Guser { get; set; }
         [Required]
         public Guid CommunityId { get; set; }
