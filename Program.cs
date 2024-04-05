@@ -25,6 +25,7 @@ builder.Services.AddIdentity<Guser, IdentityRole>(options =>
     })
     .AddEntityFrameworkStores<SiteDbContext>()
     .AddDefaultUI()
+    .AddTokenProvider<DataProtectorTokenProvider<Guser>>(TokenOptions.DefaultProvider)
     .AddRoles<IdentityRole>();
 
 var app = builder.Build();
@@ -65,12 +66,13 @@ using(var scope = app.Services.CreateScope())
 using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Guser>>();
+    string username = "Goorzechu";
     string email = "Grzegorz@admin.com";
     string password = "zaq1@WSX";
-    if (await userManager.FindByEmailAsync(email) == null)
+    if (await userManager.FindByNameAsync(username) == null)
     {
         var user = new Guser();
-        user.UserName = "Owner";
+        user.UserName = username;
         user.Email = email;
         user.EmailConfirmed = true;
         await userManager.CreateAsync(user, password);
