@@ -29,6 +29,12 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="CommunityManage" asp-action="GommunityAdd">Add a Community</a></li>
                             </ul>
                         </li>
+                        @if (User.IsInRole("Owner"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserPanel" asp-action="UserList">User List</a>
+                            </li>
+                        }
                         <partial name="_LoginPartial" />
                     </ul>
                 </div>
