@@ -22,6 +22,7 @@ builder.Services.AddDbContext<SiteDbContext>(options => options.UseSqlServer(bui
 builder.Services.AddIdentity<Guser, IdentityRole>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
+        options.User.RequireUniqueEmail = true;
     })
     .AddEntityFrameworkStores<SiteDbContext>()
     .AddDefaultUI()

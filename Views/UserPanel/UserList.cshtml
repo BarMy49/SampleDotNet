@@ -1,4 +1,4 @@
-﻿@model List<Guser>
+﻿@model UserViewModel
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Guser> _userManager
 @{
@@ -10,14 +10,14 @@
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model[0].Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Gusers[0].Id)</th>
             <th>@Html.ActionLink("Username", "UserList", new {sortOrder = ViewBag.NameSort})</th>
             <th>@Html.ActionLink("Email", "UserList", new { sortOrder = ViewBag.EmailSort })</th>
             <th>Role</th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var guser in Model)
+        @foreach(var guser in Model.Gusers)
         {
             var roles = await _userManager.GetRolesAsync(@guser);
             <tr>
@@ -25,30 +25,10 @@
                 <td>@Html.DisplayFor(model => guser.UserName)</td>
                 <td>@Html.DisplayFor(model => guser.Email)</td>
                 <td>@roles[0]</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="UserPanel" asp-action="Edit" asp-route-id="@guser.Id">Edit</a>
+                </td>
             </tr>
         }
     </tbody>
 </table>
-
-@* <table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var guser in Model)
-        {
-            var roles = await _userManager.GetRolesAsync(@guser);
-            <tr>
-                <td>@guser.Id</td>
-                <td>@guser.UserName</td>
-                <td>@guser.Email</td>
-                <td>@roles[0]</td>
-            </tr>
-        }
-    </tbody>
-</table> *@

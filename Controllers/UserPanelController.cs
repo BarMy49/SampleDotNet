@@ -1,34 +1,38 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using SampleDotNet.Data;
 using SampleDotNet.Models;
+using System;
 
 namespace SampleDotNet.Controllers
 {
+    [Authorize(Roles="Owner")]
     public class UserPanelController : Controller
     {
         private UserManager<Guser> _userManager;
         private SiteDbContext _siteDbContext;
+        private RoleManager<IdentityRole> _roleManager;
 
-        public UserPanelController(UserManager<Guser> userManager, SiteDbContext siteDbContext)
+        public UserPanelController(UserManager<Guser> userManager, SiteDbContext siteDbContext, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _siteDbContext = siteDbContext;
+            _roleManager = roleManager;
         }
 
-        public  IActionResult UserList(string sortOrder)
+        public IActionResult UserList(string sortOrder)
         {
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "";
             ViewBag.EmailSort = sortOrder == "email" ? "email_desc" : "email";
             var gusers = from u in _siteDbContext.Guser select u;
+            var userModel = new UserViewModel();
             switch (sortOrder)
             {
                 case "name":
                     gusers = gusers.OrderBy(u => u.UserName);
-                    break;
-                case "name_desc":
-                    gusers = gusers.OrderByDescending(u => u.UserName);
                     break;
                 case "email":
                     gusers = gusers.OrderBy(u => u.Email);
@@ -40,7 +44,37 @@ namespace SampleDotNet.Controllers
                     gusers = gusers.OrderByDescending(u => u.UserName);
                     break;
             }
-            return View(gusers.ToList());
+            userModel.Gusers = gusers.ToList();
+            return View(userModel);
+        }
+        public IActionResult Edit(string id)
+        {
+            var editModel = new EditModel();
+            editModel.guser = _siteDbContext.Guser.Find(id);
+            return View(editModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditModel editModel)
+        {
+            var guser = _siteDbContext.Guser.Find(editModel.guser.Id);
+            var isRoleOwner = await _userManager.IsInRoleAsync(guser, "Owner");
+            var oldRole = await _userManager.GetRolesAsync(guser);
+            if (guser != null && isRoleOwner == false)
+            {
+                guser.UserName = editModel.guser.UserName;
+                guser.Email = editModel.guser.Email;
+                guser.NormalizedEmail = _userManager.NormalizeEmail(editModel.guser.Email);
+                guser.NormalizedUserName = _userManager.NormalizeName(editModel.guser.UserName);
+                var isRoleSame = await _userManager.IsInRoleAsync(guser, editModel.role.Name);
+                if(isRoleSame == false)
+                {
+                    await _userManager.AddToRoleAsync(guser, editModel.role.Name);
+                    await _userManager.RemoveFromRoleAsync(guser, oldRole[0]);
+                }
+                _siteDbContext.SaveChanges();
+            }
+            return RedirectToAction("UserList","UserPanel");
         }
     }
 }

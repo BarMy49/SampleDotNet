@@ -26,7 +26,10 @@
                             <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown">Community</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="CommunityManage" asp-action="Gommunity">Browse Communities</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="CommunityManage" asp-action="GommunityAdd">Add a Community</a></li>
+                                @if (User.IsInRole("Owner") || User.IsInRole("Moderator"))
+                                {
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="CommunityManage" asp-action="GommunityAdd">Add a Community</a></li>
+                                }
                             </ul>
                         </li>
                         @if (User.IsInRole("Owner"))
