@@ -1,0 +1,26 @@
+﻿@model CommunityViewModel
+
+@{
+    ViewData["Title"] = "Communities";
+}
+
+<h1>Gommunities</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.ActionLink("Name", "GommunityList", new {sortOrder = ViewBag.NameSort})</th>
+            <th></th> @* Column for join buttons *@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var gommunity in Model.Gommunities)
+        {
+            <tr>
+                <td>@Html.DisplayFor(model => gommunity.GName)</td>
+                <td>
+                   JOIN
+                </td>
+            </tr>
+        })
+    </tbody>

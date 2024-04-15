@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 namespace SampleDotNet.Models
 {
-    public class CommunityViewModel
+    public class UserViewModel
     {
-        public List<Community> Communities { get; set; }
+        public List<Guser> Gusers { get; set; }
+        public List<IdentityRole> Roles { get; set; }
     }
 }
