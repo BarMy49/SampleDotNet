@@ -27,7 +27,7 @@ namespace SampleDotNet.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Owner, Moderator")]
+        [Authorize(Roles = "Owner")]
         public IActionResult Add(Community addCommunity)
         {
             var community = new Community

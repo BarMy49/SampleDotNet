@@ -5,11 +5,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SampleDotNet.Models;
 using Microsoft.Extensions.DependencyInjection;
+using SampleDotNet.Interface;
+using SampleDotNet.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<UserPanelInterface, UserPanelService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession(options =>
     {
