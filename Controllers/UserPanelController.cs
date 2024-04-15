@@ -14,13 +14,11 @@ namespace SampleDotNet.Controllers
     {
         private UserManager<Guser> _userManager;
         private SiteDbContext _siteDbContext;
-        private RoleManager<IdentityRole> _roleManager;
 
-        public UserPanelController(UserManager<Guser> userManager, SiteDbContext siteDbContext, RoleManager<IdentityRole> roleManager)
+        public UserPanelController(UserManager<Guser> userManager, SiteDbContext siteDbContext)
         {
             _userManager = userManager;
             _siteDbContext = siteDbContext;
-            _roleManager = roleManager;
         }
 
         public IActionResult UserList(string sortOrder)
@@ -47,6 +45,10 @@ namespace SampleDotNet.Controllers
             userModel.Gusers = gusers.ToList();
             return View(userModel);
         }
+        public IActionResult Error()
+        {
+            return View();
+        }
         public IActionResult Edit(string id)
         {
             var editModel = new EditModel();
@@ -62,19 +64,39 @@ namespace SampleDotNet.Controllers
             var oldRole = await _userManager.GetRolesAsync(guser);
             if (guser != null && isRoleOwner == false)
             {
-                guser.UserName = editModel.guser.UserName;
-                guser.Email = editModel.guser.Email;
-                guser.NormalizedEmail = _userManager.NormalizeEmail(editModel.guser.Email);
-                guser.NormalizedUserName = _userManager.NormalizeName(editModel.guser.UserName);
-                var isRoleSame = await _userManager.IsInRoleAsync(guser, editModel.role.Name);
-                if(isRoleSame == false)
+                try
                 {
-                    await _userManager.AddToRoleAsync(guser, editModel.role.Name);
-                    await _userManager.RemoveFromRoleAsync(guser, oldRole[0]);
+                    guser.UserName = editModel.guser.UserName;
+                    guser.Email = editModel.guser.Email;
+                    guser.NormalizedEmail = _userManager.NormalizeEmail(editModel.guser.Email);
+                    guser.NormalizedUserName = _userManager.NormalizeName(editModel.guser.UserName);
+                    var isRoleSame = await _userManager.IsInRoleAsync(guser, editModel.role.Name);
+                    if (isRoleSame == false)
+                    {
+                        await _userManager.AddToRoleAsync(guser, editModel.role.Name);
+                        await _userManager.RemoveFromRoleAsync(guser, oldRole[0]);
+                    }
+                    _siteDbContext.SaveChanges();
                 }
-                _siteDbContext.SaveChanges();
+                catch (Exception ex)
+                {
+                    return RedirectToAction("Error", "UserPanel");
+                }
             }
             return RedirectToAction("UserList","UserPanel");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(EditModel editModel)
+        {
+            var guser = _siteDbContext.Guser.Find(editModel.guser.Id);
+            var isRoleOwner = await _userManager.IsInRoleAsync(guser, "Owner");
+            if (guser != null && isRoleOwner == false)
+            {
+                _siteDbContext.Guser.Remove(guser);
+                await _siteDbContext.SaveChangesAsync();
+            }
+            return RedirectToAction("UserList", "UserPanel");
         }
     }
 }

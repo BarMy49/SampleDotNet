@@ -18,6 +18,7 @@ namespace SampleDotNet.Data
             builder.Entity<Guser>(c =>
             {
                 c.Property(u => u.Garma).HasDefaultValue(1);
+                c.HasIndex(u => u.NormalizedEmail).IsUnique();
                 c.HasMany(u => u.Communities)
                 .WithMany(u => u.Gusers);
                 c.HasMany(u => u.Posts)
