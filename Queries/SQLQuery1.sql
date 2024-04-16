@@ -1,1 +1,1 @@
-﻿select * from [SampleDotNetDB].[dbo].[Communities];
+﻿select * from [SampleDotNetDB].[dbo].[Gommunities];

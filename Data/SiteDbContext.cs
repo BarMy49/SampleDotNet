@@ -11,7 +11,7 @@ namespace SampleDotNet.Data
         
         }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Community> Communities { get; set; }
+        public DbSet<Gommunity> Gommunities { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -19,7 +19,7 @@ namespace SampleDotNet.Data
             {
                 c.Property(u => u.Garma).HasDefaultValue(1);
                 c.HasIndex(u => u.NormalizedEmail).IsUnique();
-                c.HasMany(u => u.Communities)
+                c.HasMany(u => u.Gommunities)
                 .WithMany(u => u.Gusers);
                 c.HasMany(u => u.Posts)
                 .WithOne(u => u.Guser);

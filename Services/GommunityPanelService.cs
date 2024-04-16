@@ -5,19 +5,19 @@ using SampleDotNet.Models;
 
 namespace SampleDotNet.Services
 {
-    public class CommunityPanelService : CommunityPanelInterface
+    public class GommunityPanelService : GommunityPanelInterface
     {
         private SiteDbContext _siteDbContext;
 
-        public CommunityPanelService(SiteDbContext siteDbContext)
+        public GommunityPanelService(SiteDbContext siteDbContext)
         {
             _siteDbContext = siteDbContext;
         }
 
-        public CommunityViewModel ShowCommunityList(string sortOrder)
+        public GommunityViewModel ShowGommunityList(string sortOrder)
         { 
-            var gommunities = from g in _siteDbContext.Communities select g;
-            var communityModel = new CommunityViewModel();
+            var gommunities = from g in _siteDbContext.Gommunities select g;
+            var gommunityModel = new GommunityViewModel();
             switch (sortOrder)
             {
                 case "name":
@@ -30,8 +30,8 @@ namespace SampleDotNet.Services
                     gommunities = gommunities.OrderByDescending(g => g.GName);
                     break;
             }
-            communityModel.Gommunities = gommunities.ToList();
-            return communityModel;
+            gommunityModel.Gommunities = gommunities.ToList();
+            return gommunityModel;
         }
     }
 }

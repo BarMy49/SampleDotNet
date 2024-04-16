@@ -19,7 +19,7 @@ namespace SampleDotNet.Models
         [ForeignKey("GuserId")]
         public virtual Guser Guser { get; set; }
         [Required]
-        public Guid CommunityId { get; set; }
-        public virtual Community Community { get; set; }
+        public Guid GommunityId { get; set; }
+        public virtual Gommunity Gommunity { get; set; }
     }
 }

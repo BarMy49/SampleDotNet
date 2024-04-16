@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace SampleDotNet.Models
 {
-    public class Community
+    public class Gommunity
     {
         [Required]
         public Guid Id { get; set; }

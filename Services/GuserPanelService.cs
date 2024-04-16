@@ -5,19 +5,19 @@ using SampleDotNet.Models;
 
 namespace SampleDotNet.Services
 {
-    public class UserPanelService : UserPanelInterface
+    public class GuserPanelService : UserPanelInterface
     {
         private UserManager<Guser> _userManager;
         private SiteDbContext _siteDbContext;
-        public UserPanelService(UserManager<Guser> userManager, SiteDbContext siteDbContext)
+        public GuserPanelService(UserManager<Guser> userManager, SiteDbContext siteDbContext)
         {
             _siteDbContext = siteDbContext;
             _userManager = userManager;
         }
-        public UserViewModel ShowUserList(string sortOrder)
+        public GuserViewModel ShowUserList(string sortOrder)
         {
             var gusers = from u in _siteDbContext.Guser select u;
-            var userModel = new UserViewModel();
+            var userModel = new GuserViewModel();
             switch (sortOrder)
             {
                 case "name":

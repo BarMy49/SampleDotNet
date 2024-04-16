@@ -11,17 +11,17 @@ using System;
 namespace SampleDotNet.Controllers
 {
     [Authorize(Roles="Owner")]
-    public class UserPanelController : Controller
+    public class GuserPanelController : Controller
     {
         private UserManager<Guser> _userManager;
         private UserPanelInterface _userInterface;
-        public UserPanelController(UserManager<Guser> userManager, UserPanelInterface userInterface)
+        public GuserPanelController(UserManager<Guser> userManager, UserPanelInterface userInterface)
         {
             _userManager = userManager;
             _userInterface = userInterface;
         }
 
-        public IActionResult UserList(string sortOrder)
+        public IActionResult GuserList(string sortOrder)
         {
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "";
             ViewBag.EmailSort = sortOrder == "email" ? "email_desc" : "email";
