@@ -23,6 +23,9 @@ namespace SampleDotNet.Controllers
         {
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "";
             var gommunityModel = _gommunityInterface.ShowGommunityList(sortOrder);
+
+            
+
             return View(gommunityModel);
         }
 
@@ -42,7 +45,7 @@ namespace SampleDotNet.Controllers
             };
             _context.Gommunities.Add(gommunity);
             _context.SaveChanges();
-            return View("GommunityList");
+            return RedirectToAction("GommunityList");
         }
     }
 }
