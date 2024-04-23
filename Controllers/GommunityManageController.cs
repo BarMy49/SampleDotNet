@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +14,11 @@ namespace SampleDotNet.Controllers
     {
         private SiteDbContext _context;
         private GommunityPanelInterface _gommunityInterface;
-        public GommunityManageController(SiteDbContext context, GommunityPanelInterface gommunityInterface)
+        private UserManager<Guser> _userManager;
+        public GommunityManageController(SiteDbContext context, UserManager<Guser> userManager, GommunityPanelInterface gommunityInterface)
         {
             _context = context;
+            _userManager = userManager;
             _gommunityInterface = gommunityInterface;
         }
 
@@ -32,6 +35,34 @@ namespace SampleDotNet.Controllers
         public IActionResult GommunityAdd()
         {
             return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Join(string id)
+        {
+            if (!Guid.TryParse(id, out Guid gommunityId))
+            {
+                return BadRequest("Invalid Gommunity id");
+            }
+
+            var gommunity = _context.Gommunities
+                .Include(g => g.Gusers)
+                .FirstOrDefault(g => g.Id == gommunityId);
+            if (gommunity == null)
+            {
+                return NotFound("Gommunity not found");
+            }
+
+            var guser = await _userManager.GetUserAsync(User);
+            if (guser == null)
+            {
+                return NotFound("Guser not found");
+            }
+
+            gommunity.Gusers.Add(guser);
+            _context.SaveChanges();
+
+            return RedirectToAction("GommunityList");
         }
 
         [HttpPost]

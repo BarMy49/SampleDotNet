@@ -10,8 +10,7 @@
     <thead>
         <tr>
             <th>@Html.ActionLink("Name", "GommunityList", new {sortOrder = ViewBag.NameSort})</th>
-            <th>Posts</th>
-            <th>Users</th>
+            <th>GommunityId</th>
             <th></th> @* Column for join buttons *@
         </tr>
     </thead>
@@ -19,10 +18,11 @@
          @foreach(var gommunity in Model.Gommunities)
          {
              <tr>
-                 <td>@Html.DisplayFor(model => gommunity.GName)</td>
-                <td>@Html.DisplayFor(model => gommunity.Posts)</td>
-                <td>@Html.DisplayFor(model => gommunity.Gusers)</td>
-                 <td>JOIN</td>
+                <td>@Html.DisplayFor(model => gommunity.GName)</td>
+                <td>@Html.DisplayFor(model => gommunity.Id)</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="Join" asp-route-id="@gommunity.Id">Join</a>
+                </td>
              </tr>
          }
     </tbody>
