@@ -57,7 +57,9 @@ namespace SampleDotNet.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    GName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GuserCount = table.Column<int>(type: "int", nullable: false),
+                    PostCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

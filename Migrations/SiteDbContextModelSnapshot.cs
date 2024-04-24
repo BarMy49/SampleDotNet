@@ -256,6 +256,12 @@ namespace SampleDotNet.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GuserCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostCount")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Gommunities");

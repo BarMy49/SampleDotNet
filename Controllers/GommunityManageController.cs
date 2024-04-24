@@ -22,12 +22,11 @@ namespace SampleDotNet.Controllers
             _gommunityInterface = gommunityInterface;
         }
 
-        public IActionResult GommunityList(string sortOrder)
+        public async Task<IActionResult> GommunityList(string sortOrder)
         {
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "";
             var gommunityModel = _gommunityInterface.ShowGommunityList(sortOrder);
-
-            
+            gommunityModel.guser = await _userManager.GetUserAsync(User);
 
             return View(gommunityModel);
         }
@@ -59,7 +58,44 @@ namespace SampleDotNet.Controllers
                 return NotFound("Guser not found");
             }
 
-            gommunity.Gusers.Add(guser);
+            if (!gommunity.Gusers.Contains(guser))
+            {
+                gommunity.Gusers.Add(guser);
+                gommunity.GuserCount = gommunity.Gusers.Count;
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("GommunityList");
+        }
+        [Authorize]
+        public async Task<IActionResult> Leave(string id)
+        {
+            if (!Guid.TryParse(id, out Guid gommunityId))
+            {
+                return BadRequest("Invalid Gommunity id");
+            }
+
+            var gommunity = _context.Gommunities
+                .Include(g => g.Gusers)
+                .FirstOrDefault(g => g.Id == gommunityId);
+            if (gommunity == null)
+            {
+                return NotFound("Gommunity not found");
+            }
+
+            var guser = await _userManager.GetUserAsync(User);
+            if (guser == null)
+            {
+                return NotFound("Guser not found");
+            }
+
+            if (gommunity.Gusers.Contains(guser))
+            {
+                gommunity.Gusers.Remove(guser);
+                gommunity.GuserCount = gommunity.Gusers.Count;
+            }
+
             _context.SaveChanges();
 
             return RedirectToAction("GommunityList");

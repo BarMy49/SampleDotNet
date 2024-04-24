@@ -10,19 +10,27 @@
     <thead>
         <tr>
             <th>@Html.ActionLink("Name", "GommunityList", new {sortOrder = ViewBag.NameSort})</th>
-            <th>GommunityId</th>
+            <th>Posts</th>
+            <th>Gusers</th>
             <th></th> @* Column for join buttons *@
         </tr>
     </thead>
     <tbody>
-         @foreach(var gommunity in Model.Gommunities)
-         {
-             <tr>
+        @foreach(var gommunity in Model.Gommunities)
+        {
+            <tr>
                 <td>@Html.DisplayFor(model => gommunity.GName)</td>
-                <td>@Html.DisplayFor(model => gommunity.Id)</td>
-                <td>
-                    <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="Join" asp-route-id="@gommunity.Id">Join</a>
-                </td>
-             </tr>
-         }
+                <td>@Html.DisplayFor(model => gommunity.PostCount)</td>
+                <td>@Html.DisplayFor(model => gommunity.GuserCount)</td>
+                @if(gommunity.Gusers.Contains(Model.guser)) {
+                    <td>
+                        <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="Leave" asp-route-id="@gommunity.Id">Leave</a>
+                    </td>
+                } else {
+                    <td>
+                        <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="Join" asp-route-id="@gommunity.Id">Join</a>
+                    </td>
+                }
+            </tr>
+        }
     </tbody>

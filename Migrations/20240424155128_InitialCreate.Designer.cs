@@ -12,7 +12,7 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20240416140344_InitialCreate")]
+    [Migration("20240424155128_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -258,6 +258,12 @@ namespace SampleDotNet.Migrations
                     b.Property<string>("GName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GuserCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostCount")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
