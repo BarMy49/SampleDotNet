@@ -2,7 +2,7 @@
 
 namespace SampleDotNet.Interface
 {
-    public interface UserPanelInterface
+    public interface GuserPanelInterface
     {
         public GuserViewModel ShowUserList(string sortOrder);
         public EditModel ShowEdit(string id);

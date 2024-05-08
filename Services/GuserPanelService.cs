@@ -5,7 +5,7 @@ using SampleDotNet.Models;
 
 namespace SampleDotNet.Services
 {
-    public class GuserPanelService : UserPanelInterface
+    public class GuserPanelService : GuserPanelInterface
     {
         private UserManager<Guser> _userManager;
         private SiteDbContext _siteDbContext;

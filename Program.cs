@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<UserPanelInterface, GuserPanelService>();
+builder.Services.AddTransient<GuserPanelInterface, GuserPanelService>();
 builder.Services.AddTransient<GommunityPanelInterface, GommunityPanelService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession(options =>
