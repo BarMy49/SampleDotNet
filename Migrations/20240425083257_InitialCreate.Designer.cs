@@ -12,7 +12,7 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20240424155128_InitialCreate")]
+    [Migration("20240425083257_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
