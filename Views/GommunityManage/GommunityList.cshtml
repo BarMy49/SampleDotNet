@@ -9,9 +9,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>@Html.ActionLink("Name", "GommunityList", new {sortOrder = ViewBag.NameSort})</th>
-            <th>Posts</th>
-            <th>Gusers</th>
+            <th>@Html.ActionLink("Name", "GommunityList", new { sortOrder = ViewBag.NameSort })</th>
+            <th>@Html.ActionLink("Posts", "GommunityList", new { sortOrder = ViewBag.PostsSort })</th>
+            <th>@Html.ActionLink("Gusers", "GommunityList", new { sortOrder = ViewBag.GusersSort })</th>
             @if (Model.guser != null)
             {
                 <th></th> 

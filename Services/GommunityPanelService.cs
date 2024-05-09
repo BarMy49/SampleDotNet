@@ -28,6 +28,18 @@ namespace SampleDotNet.Services
                 case "name_desc":
                     gommunities = gommunities.OrderByDescending(g => g.GName);
                     break;
+                case "posts":
+                    gommunities = gommunities.OrderBy(g => g.PostCount);
+                    break;
+                case "posts_desc":
+                    gommunities = gommunities.OrderByDescending(g => g.PostCount);
+                    break;
+                case "gusers":
+                    gommunities = gommunities.OrderBy(g => g.GuserCount);
+                    break;
+                case "gusers_desc":
+                    gommunities = gommunities.OrderByDescending(g => g.GuserCount);
+                    break;
                 default:
                     gommunities = gommunities.OrderByDescending(g => g.GName);
                     break;

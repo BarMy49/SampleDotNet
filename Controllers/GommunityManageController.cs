@@ -25,6 +25,8 @@ namespace SampleDotNet.Controllers
         public async Task<IActionResult> GommunityList(string sortOrder)
         {
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "";
+            ViewBag.PostsSort = sortOrder == "posts" ? "posts_desc" : "posts";
+            ViewBag.GusersSort = sortOrder == "gusers" ? "gusers_desc" : "gusers";
             var gommunityModel = _gommunityInterface.ShowGommunityList(sortOrder);
             gommunityModel.guser = await _userManager.GetUserAsync(User);
 

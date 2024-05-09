@@ -47,16 +47,16 @@ namespace SampleDotNet.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error", "UserPanel");
+                return RedirectToAction("Error", "GuserPanel");
             }
-            return RedirectToAction("UserList", "UserPanel");
+            return RedirectToAction("GuserList", "GuserPanel");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(EditModel editModel)
         {
             await _guserInterface.DeleteUserList(editModel);
-            return RedirectToAction("UserList", "UserPanel");
+            return RedirectToAction("GuserList", "GuserPanel");
         }
     }
 }
