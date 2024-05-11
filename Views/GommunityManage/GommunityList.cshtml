@@ -23,7 +23,7 @@
         @foreach(var gommunity in Model.Gommunities)
         {
             <tr>
-                <td>@Html.DisplayFor(model => gommunity.GName)</td>
+                <td>@Html.ActionLink(gommunity.GName, "Redirect", new { gommunityName = gommunity.GName }, null)</td>
                 <td>@Html.DisplayFor(model => gommunity.PostCount)</td>
                 <td>@Html.DisplayFor(model => gommunity.GuserCount)</td>
                 @if (Model.guser != null && gommunity.Gusers.Contains(Model.guser)) {

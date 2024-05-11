@@ -22,6 +22,11 @@ namespace SampleDotNet.Controllers
             _gommunityInterface = gommunityInterface;
         }
 
+        public IActionResult Redirect(string gommunityName)
+        {
+            return RedirectToAction("Index", "Gommunity", new { gommunityName });
+        }
+
         public async Task<IActionResult> GommunityList(string sortOrder)
         {
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "";
