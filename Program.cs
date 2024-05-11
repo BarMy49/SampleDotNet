@@ -63,7 +63,8 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
        name: "Gommunity",
-       pattern: "{controller=Gommunity}/{action=Index}/{gommunityName}"
+       pattern: "{controller=Gommunity}/{gommunityName?}",
+       defaults: new { controller = "Gommunity", action = "Index" }
 );
 
 using (var scope = app.Services.CreateScope())

@@ -24,7 +24,8 @@ namespace SampleDotNet.Controllers
 
         public IActionResult Redirect(string gommunityName)
         {
-            return RedirectToAction("Index", "Gommunity", new { gommunityName });
+
+            return RedirectToRoute("Gommunity", new { controller = "Gommunity", action = "Index", gommunityName = gommunityName });
         }
 
         public async Task<IActionResult> GommunityList(string sortOrder)
