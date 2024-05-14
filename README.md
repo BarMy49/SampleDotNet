@@ -1,7 +1,8 @@
 # SampleDotNet
 .NET forum web app
 # TODO
-- view for gommunities
-- posting
-- commenting
-- reacting
+- dodawanie zdjêæ do postów
+- usuwanie postów
+- edytowanie gommunity (nowy view do tego)
+- dodawanie komentarzy
+- dodawanie reakcji
