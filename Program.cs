@@ -7,12 +7,16 @@ using SampleDotNet.Models;
 using Microsoft.Extensions.DependencyInjection;
 using SampleDotNet.Interface;
 using SampleDotNet.Services;
+using System.Security.Policy;
+using Microsoft.Identity.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<UserPanelInterface, UserPanelService>();
+builder.Services.AddTransient<GuserPanelInterface, GuserPanelService>();
+builder.Services.AddTransient<GommunityPanelInterface, GommunityPanelService>();
+builder.Services.AddTransient<GommunityInterface, GommunityService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession(options =>
     {
@@ -54,9 +58,16 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+);
 
-using(var scope = app.Services.CreateScope())
+app.MapControllerRoute(
+       name: "Gommunity",
+       pattern: "{controller=Gommunity}/{gommunityName?}",
+       defaults: new { controller = "Gommunity", action = "Index" }
+);
+
+using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var roles = new[] { "Owner", "Moderator", "Guser" };

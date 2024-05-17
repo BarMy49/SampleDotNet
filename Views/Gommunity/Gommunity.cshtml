@@ -1,0 +1,8 @@
+﻿@model SampleDotNet.Models.Gommunity
+
+@{
+    ViewBag.Title = Model.GName;
+}
+
+<h2>@Model.GName</h2>
+<a class="btn btn-primary" asp-controller="Gommunity" asp-action="CreatePost" asp-route-gommunityName="@Model.GName" >Create a Post</a>

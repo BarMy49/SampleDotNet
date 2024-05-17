@@ -9,6 +9,6 @@ namespace SampleDotNet.Models
         [DefaultValue(1)]
         public int Garma { get; set; }
         public virtual ICollection<Post>? Posts { get; set;}
-        public virtual ICollection<Community>? Communities { get; set; }
+        public virtual ICollection<Gommunity>? Gommunities { get; set; }
     }
 }

@@ -1,0 +1,40 @@
+﻿@model GommunityViewModel
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "Gommunities";
+}
+
+<h1>Gommunities</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.ActionLink("Name", "GommunityList", new { sortOrder = ViewBag.NameSort })</th>
+            <th>@Html.ActionLink("Posts", "GommunityList", new { sortOrder = ViewBag.PostsSort })</th>
+            <th>@Html.ActionLink("Gusers", "GommunityList", new { sortOrder = ViewBag.GusersSort })</th>
+            @if (Model.guser != null)
+            {
+                <th></th> 
+                @* Column for join buttons *@
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var gommunity in Model.Gommunities)
+        {
+            <tr>
+                <td>@Html.ActionLink(gommunity.GName, "Redirect", new { gommunityName = gommunity.GName }, null)</td>
+                <td>@Html.DisplayFor(model => gommunity.PostCount)</td>
+                <td>@Html.DisplayFor(model => gommunity.GuserCount)</td>
+                @if (Model.guser != null && gommunity.Gusers.Contains(Model.guser)) {
+                    <td>
+                        <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="Leave" asp-route-id="@gommunity.Id">Leave</a>
+                    </td>
+                } else if(Model.guser != null) {
+                        <td>
+                            <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="Join" asp-route-id="@gommunity.Id">Join</a>
+                        </td>
+                }
+            </tr>
+        }
+    </tbody>

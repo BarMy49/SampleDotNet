@@ -22,19 +22,19 @@ namespace SampleDotNet.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CommunityGuser", b =>
+            modelBuilder.Entity("GommunityGuser", b =>
                 {
-                    b.Property<Guid>("CommunitiesId")
+                    b.Property<Guid>("GommunitiesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("GusersId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("CommunitiesId", "GusersId");
+                    b.HasKey("GommunitiesId", "GusersId");
 
                     b.HasIndex("GusersId");
 
-                    b.ToTable("CommunityGuser");
+                    b.ToTable("GommunityGuser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -246,7 +246,7 @@ namespace SampleDotNet.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SampleDotNet.Models.Community", b =>
+            modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -256,9 +256,15 @@ namespace SampleDotNet.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GuserCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PostCount")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Communities");
+                    b.ToTable("Gommunities");
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
@@ -267,12 +273,12 @@ namespace SampleDotNet.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CommunityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("GommunityId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Gratio")
                         .ValueGeneratedOnAdd()
@@ -292,7 +298,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommunityId");
+                    b.HasIndex("GommunityId");
 
                     b.HasIndex("GuserId");
 
@@ -311,11 +317,11 @@ namespace SampleDotNet.Migrations
                     b.HasDiscriminator().HasValue("Guser");
                 });
 
-            modelBuilder.Entity("CommunityGuser", b =>
+            modelBuilder.Entity("GommunityGuser", b =>
                 {
-                    b.HasOne("SampleDotNet.Models.Community", null)
+                    b.HasOne("SampleDotNet.Models.Gommunity", null)
                         .WithMany()
-                        .HasForeignKey("CommunitiesId")
+                        .HasForeignKey("GommunitiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -379,9 +385,9 @@ namespace SampleDotNet.Migrations
 
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
                 {
-                    b.HasOne("SampleDotNet.Models.Community", "Community")
+                    b.HasOne("SampleDotNet.Models.Gommunity", "Gommunity")
                         .WithMany("Posts")
-                        .HasForeignKey("CommunityId")
+                        .HasForeignKey("GommunityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -391,12 +397,12 @@ namespace SampleDotNet.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Community");
+                    b.Navigation("Gommunity");
 
                     b.Navigation("Guser");
                 });
 
-            modelBuilder.Entity("SampleDotNet.Models.Community", b =>
+            modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
                 {
                     b.Navigation("Posts");
                 });

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SampleDotNet.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,15 +53,17 @@ namespace SampleDotNet.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Communities",
+                name: "Gommunities",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    GName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GuserCount = table.Column<int>(type: "int", nullable: false),
+                    PostCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Communities", x => x.Id);
+                    table.PrimaryKey("PK_Gommunities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,25 +173,25 @@ namespace SampleDotNet.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CommunityGuser",
+                name: "GommunityGuser",
                 columns: table => new
                 {
-                    CommunitiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GommunitiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GusersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CommunityGuser", x => new { x.CommunitiesId, x.GusersId });
+                    table.PrimaryKey("PK_GommunityGuser", x => new { x.GommunitiesId, x.GusersId });
                     table.ForeignKey(
-                        name: "FK_CommunityGuser_AspNetUsers_GusersId",
+                        name: "FK_GommunityGuser_AspNetUsers_GusersId",
                         column: x => x.GusersId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CommunityGuser_Communities_CommunitiesId",
-                        column: x => x.CommunitiesId,
-                        principalTable: "Communities",
+                        name: "FK_GommunityGuser_Gommunities_GommunitiesId",
+                        column: x => x.GommunitiesId,
+                        principalTable: "Gommunities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -204,7 +206,7 @@ namespace SampleDotNet.Migrations
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gratio = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     GuserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CommunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    GommunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,9 +218,9 @@ namespace SampleDotNet.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Posts_Communities_CommunityId",
-                        column: x => x.CommunityId,
-                        principalTable: "Communities",
+                        name: "FK_Posts_Gommunities_GommunityId",
+                        column: x => x.GommunityId,
+                        principalTable: "Gommunities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -253,7 +255,9 @@ namespace SampleDotNet.Migrations
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
-                column: "NormalizedEmail");
+                column: "NormalizedEmail",
+                unique: true,
+                filter: "[NormalizedEmail] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -263,14 +267,14 @@ namespace SampleDotNet.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommunityGuser_GusersId",
-                table: "CommunityGuser",
+                name: "IX_GommunityGuser_GusersId",
+                table: "GommunityGuser",
                 column: "GusersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_CommunityId",
+                name: "IX_Posts_GommunityId",
                 table: "Posts",
-                column: "CommunityId");
+                column: "GommunityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_GuserId",
@@ -297,7 +301,7 @@ namespace SampleDotNet.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CommunityGuser");
+                name: "GommunityGuser");
 
             migrationBuilder.DropTable(
                 name: "Posts");
@@ -309,7 +313,7 @@ namespace SampleDotNet.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Communities");
+                name: "Gommunities");
         }
     }
 }

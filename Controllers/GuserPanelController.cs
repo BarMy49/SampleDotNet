@@ -11,21 +11,21 @@ using System;
 namespace SampleDotNet.Controllers
 {
     [Authorize(Roles="Owner")]
-    public class UserPanelController : Controller
+    public class GuserPanelController : Controller
     {
-        private UserManager<Guser> _userManager;
-        private UserPanelInterface _userInterface;
-        public UserPanelController(UserManager<Guser> userManager, UserPanelInterface userInterface)
+        private UserManager<Guser> _guserManager;
+        private GuserPanelInterface _guserInterface;
+        public GuserPanelController(UserManager<Guser> userManager, GuserPanelInterface userInterface)
         {
-            _userManager = userManager;
-            _userInterface = userInterface;
+            _guserManager = userManager;
+            _guserInterface = userInterface;
         }
 
-        public IActionResult UserList(string sortOrder)
+        public IActionResult GuserList(string sortOrder)
         {
             ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name" : "";
             ViewBag.EmailSort = sortOrder == "email" ? "email_desc" : "email";
-            var userModel = _userInterface.ShowUserList(sortOrder);
+            var userModel = _guserInterface.ShowUserList(sortOrder);
             return View(userModel);
         }
         public IActionResult Error()
@@ -34,7 +34,7 @@ namespace SampleDotNet.Controllers
         }
         public IActionResult Edit(string id)
         {
-            var editModel = _userInterface.ShowEdit(id);
+            var editModel = _guserInterface.ShowEdit(id);
             return View(editModel);
         }
         [HttpPost]
@@ -43,20 +43,20 @@ namespace SampleDotNet.Controllers
         {
             try
             {
-                await _userInterface.EditUserList(editModel);
+                await _guserInterface.EditUserList(editModel);
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error", "UserPanel");
+                return RedirectToAction("Error", "GuserPanel");
             }
-            return RedirectToAction("UserList", "UserPanel");
+            return RedirectToAction("GuserList", "GuserPanel");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(EditModel editModel)
         {
-            await _userInterface.DeleteUserList(editModel);
-            return RedirectToAction("UserList", "UserPanel");
+            await _guserInterface.DeleteUserList(editModel);
+            return RedirectToAction("GuserList", "GuserPanel");
         }
     }
 }
