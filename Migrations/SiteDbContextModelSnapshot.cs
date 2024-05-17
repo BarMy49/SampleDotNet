@@ -34,7 +34,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasIndex("GusersId");
 
-                    b.ToTable("GommunityGuser");
+                    b.ToTable("GommunityGuser", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -264,7 +264,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Gommunities");
+                    b.ToTable("Gommunities", (string)null);
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
@@ -302,7 +302,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasIndex("GuserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
