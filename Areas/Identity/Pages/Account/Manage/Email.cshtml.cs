@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using SampleDotNet.Data;
 using SampleDotNet.Models;
 
 namespace SampleDotNet.Areas.Identity.Pages.Account.Manage
@@ -21,15 +22,18 @@ namespace SampleDotNet.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<Guser> _userManager;
         private readonly SignInManager<Guser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private SiteDbContext _siteDbContext;
 
         public EmailModel(
             UserManager<Guser> userManager,
             SignInManager<Guser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            SiteDbContext siteDbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _siteDbContext = siteDbContext;
         }
 
         /// <summary>
@@ -117,19 +121,11 @@ namespace SampleDotNet.Areas.Identity.Pages.Account.Manage
             if (Input.NewEmail != email)
             {
                 var userId = await _userManager.GetUserIdAsync(user);
-                var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ConfirmEmailChange",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
-                    protocol: Request.Scheme);
-                await _emailSender.SendEmailAsync(
-                    Input.NewEmail,
-                    "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                user.Email = Input.NewEmail;
+                user.EmailConfirmed = true;
+                user.NormalizedEmail = _userManager.NormalizeEmail(Input.NewEmail);
+                _siteDbContext.SaveChanges();
+                StatusMessage = "Email has been changed.";
                 return RedirectToPage();
             }
 

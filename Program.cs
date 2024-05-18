@@ -9,6 +9,8 @@ using SampleDotNet.Interface;
 using SampleDotNet.Services;
 using System.Security.Policy;
 using Microsoft.Identity.Client;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +37,18 @@ builder.Services.AddIdentity<Guser, IdentityRole>(options =>
     .AddDefaultUI()
     .AddTokenProvider<DataProtectorTokenProvider<Guser>>(TokenOptions.DefaultProvider)
     .AddRoles<IdentityRole>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+    .AddCookie()
+    .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+    {
+        options.ClientId = builder.Configuration.GetSection("GoogleKeys:ClientId").Value;
+        options.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
+    });
 
 var app = builder.Build();
 
