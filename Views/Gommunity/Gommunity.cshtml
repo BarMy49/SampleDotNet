@@ -8,7 +8,7 @@
 <a class="btn btn-primary" asp-controller="Gommunity" asp-action="CreatePost" asp-route-gommunityName="@Model.GName" >Create a Post</a>
 <h3>Posts</h3>
 <div class="posts">
-@foreach(var post in Model.Posts)
+@foreach(var post in Model.Posts.Reverse())
 {
     <div class="card">
         <div class="card-header">
@@ -16,7 +16,10 @@
         </div>
         <div class="card-body">
             <p>@post.Description</p>
-            <img style="width: 100%" src="data:image/jpeg;base64,@post.Image" />
+                @if (post.Image != null)
+                {
+                    <img style="width: 100%" src="data:image/jpeg;base64,@post.Image" />
+                }
         </div>
     </div>
 }
