@@ -1,19 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SampleDotNet.Data;
 using SampleDotNet.Interface;
 using SampleDotNet.Models;
-using System.Xml.Linq;
 
 namespace SampleDotNet.Services
 {
     public class GommunityService : GommunityInterface
     {
         private SiteDbContext _siteDbContext;
-        
+
 
         public GommunityService(SiteDbContext siteDbContext)
         {
@@ -25,7 +20,7 @@ namespace SampleDotNet.Services
             return _siteDbContext.Gommunities.Include(g => g.Gusers).Include(g => g.Posts).FirstOrDefault(g => g.GName == gommunityName);
         }
 
-        public async void SavePost(Post post, Guser guser)
+        public void SavePost(Post post, Guser guser)
         {
             post.Gommunity = _siteDbContext.Gommunities.Include(g => g.Gusers).Include(g => g.Posts).FirstOrDefault(g => g.Id == post.GommunityId);
             post.Guser = _siteDbContext.Guser.FirstOrDefault(u => u.Id == guser.Id);

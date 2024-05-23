@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Versioning;
-using SampleDotNet.Data;
 using SampleDotNet.Interface;
 using SampleDotNet.Models;
-using System;
 
 namespace SampleDotNet.Controllers
 {
-    [Authorize(Roles="Owner")]
+    [Authorize(Roles = "Owner")]
     public class GuserPanelController : Controller
     {
         private UserManager<Guser> _guserManager;

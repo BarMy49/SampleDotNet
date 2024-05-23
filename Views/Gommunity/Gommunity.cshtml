@@ -1,8 +1,23 @@
-﻿@model SampleDotNet.Models.Gommunity
-
+﻿@model Gommunity
+@using Microsoft.AspNetCore.Identity
 @{
-    ViewBag.Title = Model.GName;
+    ViewData["Title"] = Model.GName;
 }
 
 <h2>@Model.GName</h2>
 <a class="btn btn-primary" asp-controller="Gommunity" asp-action="CreatePost" asp-route-gommunityName="@Model.GName" >Create a Post</a>
+<h3>Posts</h3>
+<div class="posts">
+@foreach(var post in Model.Posts)
+{
+    <div class="card">
+        <div class="card-header">
+            <h3>@post.Title</h3>
+        </div>
+        <div class="card-body">
+            <p>@post.Description</p>
+            <img style="width: 100%" src="data:image/jpeg;base64,@post.Image" />
+        </div>
+    </div>
+}
+</div>

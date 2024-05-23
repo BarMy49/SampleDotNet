@@ -1,14 +1,13 @@
-﻿using SampleDotNet.Models;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using SampleDotNet.Models;
 namespace SampleDotNet.Data
 {
     public class SiteDbContext : IdentityDbContext
     {
         public SiteDbContext(DbContextOptions<SiteDbContext> options) : base(options)
         {
-        
+
         }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Gommunity> Gommunities { get; set; }

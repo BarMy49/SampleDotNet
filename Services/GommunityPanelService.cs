@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SampleDotNet.Data;
 using SampleDotNet.Interface;
 using SampleDotNet.Models;
@@ -16,7 +15,7 @@ namespace SampleDotNet.Services
         }
 
         public GommunityViewModel ShowGommunityList(string sortOrder)
-        { 
+        {
             var gommunities = from g in _siteDbContext.Gommunities.Include(g => g.Gusers)
                               select g;
             var gommunityModel = new GommunityViewModel();

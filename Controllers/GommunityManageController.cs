@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SampleDotNet.Data;
 using SampleDotNet.Interface;
 using SampleDotNet.Models;
-using System.Xml.Linq;
 
 namespace SampleDotNet.Controllers
 {
@@ -34,7 +32,6 @@ namespace SampleDotNet.Controllers
             ViewBag.PostsSort = sortOrder == "posts" ? "posts_desc" : "posts";
             ViewBag.GusersSort = sortOrder == "gusers" ? "gusers_desc" : "gusers";
             var gommunityModel = _gommunityInterface.ShowGommunityList(sortOrder);
-            gommunityModel.guser = await _userManager.GetUserAsync(User);
 
             return View(gommunityModel);
         }
@@ -42,6 +39,25 @@ namespace SampleDotNet.Controllers
         public IActionResult GommunityAdd()
         {
             return View();
+        }
+
+        [Authorize(Roles = "Owner")]
+        public IActionResult GommunityEdit(string id)
+        {
+            if (!Guid.TryParse(id, out Guid gommunityId))
+            {
+                return BadRequest("Invalid Gommunity id");
+            }
+
+            var gommunity = _context.Gommunities
+                .Include(g => g.Gusers)
+                .FirstOrDefault(g => g.Id == gommunityId);
+            if (gommunity == null)
+            {
+                return NotFound("Gommunity not found");
+            }
+
+            return View(gommunity);
         }
 
         [Authorize]
@@ -109,6 +125,7 @@ namespace SampleDotNet.Controllers
             return RedirectToAction("GommunityList");
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Owner")]
@@ -122,5 +139,44 @@ namespace SampleDotNet.Controllers
             _context.SaveChanges();
             return RedirectToAction("GommunityList");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Owner")]
+        public IActionResult Edit(Gommunity editGommunity)
+        {
+            var gommunity = _context.Gommunities
+                .Include(g => g.Gusers)
+                .Include(g => g.Posts)
+                .FirstOrDefault(g => g.Id == editGommunity.Id);
+            if (gommunity == null)
+            {
+                return NotFound("Gommunity not found");
+            }
+
+            gommunity.GName = editGommunity.GName;
+            _context.SaveChanges();
+            return RedirectToAction("GommunityList");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Owner")]
+        public IActionResult Delete(Gommunity editGommunity)
+        {
+            var gommunity = _context.Gommunities
+                .Include(g => g.Gusers)
+                .Include(g => g.Posts)
+                .FirstOrDefault(g => g.Id == editGommunity.Id);
+            if (gommunity == null)
+            {
+                return NotFound("Gommunity not found");
+            }
+
+            gommunity.Gusers.Clear();
+
+            _context.Gommunities.Remove(gommunity);
+            _context.SaveChanges();
+            return RedirectToAction("GommunityList");}
+
     }
 }

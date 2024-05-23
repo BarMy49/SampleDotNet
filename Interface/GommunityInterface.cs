@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SampleDotNet.Models;
+﻿using SampleDotNet.Models;
 
 namespace SampleDotNet.Interface
 {
