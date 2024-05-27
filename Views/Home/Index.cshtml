@@ -1,8 +1,26 @@
-﻿@{
+﻿@model List<SampleDotNet.Models.Post>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="posts">
+    @foreach (var post in Model)
+    {
+        <a href="https://google.com">
+            <div class="card">
+                <div class="card-header">
+                    <h6>Guser.@post.Guser.UserName</h6>
+                    <h3>@post.Title</h3>
+                </div>
+                <div class="card-body">
+                    <p>@post.Description</p>
+                    @if (post.Image != null)
+                    {
+                        <img style="max-width:100%;max-height:50vh" src="data:image/jpeg;base64,@post.Image" />
+                    }
+                </div>
+            </div>
+        </a>
+    }
 </div>

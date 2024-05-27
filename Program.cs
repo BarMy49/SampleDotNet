@@ -14,6 +14,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<GuserPanelInterface, GuserPanelService>();
 builder.Services.AddTransient<GommunityPanelInterface, GommunityPanelService>();
 builder.Services.AddTransient<GommunityInterface, GommunityService>();
+builder.Services.AddTransient<PostInterface, PostService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession(options =>
     {
