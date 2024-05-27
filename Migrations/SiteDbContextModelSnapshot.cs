@@ -246,6 +246,37 @@ namespace SampleDotNet.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("GuserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -274,7 +305,9 @@ namespace SampleDotNet.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -386,6 +419,25 @@ namespace SampleDotNet.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Comment", b =>
+                {
+                    b.HasOne("SampleDotNet.Models.Guser", "Guser")
+                        .WithMany("Comments")
+                        .HasForeignKey("GuserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SampleDotNet.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Guser");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
                 {
                     b.HasOne("SampleDotNet.Models.Gommunity", "Gommunity")
@@ -410,8 +462,15 @@ namespace SampleDotNet.Migrations
                     b.Navigation("Posts");
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618

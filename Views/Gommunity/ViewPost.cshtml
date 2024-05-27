@@ -1,0 +1,31 @@
+﻿@model SampleDotNet.Models.Post
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Guser> _userManager
+@{
+    ViewBag.Title = Model.Title;
+    var guser = await _userManager.GetUserAsync(User);
+}
+
+<div class="card">
+    <h6>@Html.ActionLink(String.Format("Gommunity/{0}",Model.Gommunity.GName), "Redirect", "GommunityManage", new { gommunityName = Model.Gommunity.GName }, null)</h6>
+    @if (guser != null && await _userManager.IsInRoleAsync(guser, "Owner"))
+    {
+        <button class="btn btn-danger">@Html.ActionLink("Delete", "Delete", "Gommunity", new { postId = Model.Id })</button>
+    }
+    <div class="card-header">
+        <h6>Guser.@Model.Guser.UserName</h6>
+        <h3>@Model.Title</h3>
+    </div>
+    <div class="card-body">
+        <p>@Model.Description</p>
+        @if (Model.Image != null)
+        {
+            <img style="max-width:100%;max-height:50vh" src="data:image/jpeg;base64,@Model.Image" />
+        }
+    </div>
+    <div class="card-footer">
+        @*<a class="btn btn-primary" asp-controller="Gommunity" asp-action="CreateComment" asp-route-postId="@Model.Id">Create a Comment</a>*@
+        @* TUTAJ KOMENTARZE *@
+    </div>
+</div>
+

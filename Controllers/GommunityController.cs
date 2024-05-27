@@ -39,6 +39,7 @@ namespace SampleDotNet.Controllers
         {
             var guser = await _userManager.GetUserAsync(User);
 
+
             if (image != null)
             {
                 using (var memoryStream = new MemoryStream())
@@ -63,6 +64,17 @@ namespace SampleDotNet.Controllers
 
             _gommunityInterface.SavePost(post, guser);
             return RedirectToAction("Index", new { gommunityName = post.Gommunity.GName });
+        }
+        public IActionResult ViewPost(Guid postId)
+        {
+            var post = _gommunityInterface.GetPostById(postId);
+            return View(post);
+        }
+        public IActionResult Delete(Guid postId) {
+            var post = _gommunityInterface.GetPostById(postId);
+            var gommunity = post.Gommunity;
+            _gommunityInterface.DeletePost(postId);
+            return View("Gommunity", gommunity);
         }
     }
 }

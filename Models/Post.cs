@@ -23,5 +23,7 @@ namespace SampleDotNet.Models
         public virtual Gommunity Gommunity { get; set; }
         [Required]
         public DateTime CreatedAt { get; set; }
+        public virtual ICollection<Comment>? Comments { get; set; }
+
     }
 }

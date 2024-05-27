@@ -10,7 +10,7 @@
 <div class="posts">
 @foreach(var post in Model.Posts.Reverse())
 {
-    <a href="https://google.com">
+    <a asp-controller="Gommunity" asp-action="ViewPost" asp-route-postId="@post.Id">
         <div class="card">
             <div class="card-header">
                 <h6>Guser.@post.Guser.UserName</h6>

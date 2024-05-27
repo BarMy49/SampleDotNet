@@ -207,7 +207,7 @@ namespace SampleDotNet.Migrations
                     Gratio = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     GuserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GommunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -224,6 +224,31 @@ namespace SampleDotNet.Migrations
                         principalTable: "Gommunities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comment",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GuserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comment", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comment_AspNetUsers_GuserId",
+                        column: x => x.GuserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Comment_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -268,6 +293,16 @@ namespace SampleDotNet.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comment_GuserId",
+                table: "Comment",
+                column: "GuserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comment_PostId",
+                table: "Comment",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GommunityGuser_GusersId",
                 table: "GommunityGuser",
                 column: "GusersId");
@@ -302,13 +337,16 @@ namespace SampleDotNet.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comment");
+
+            migrationBuilder.DropTable(
                 name: "GommunityGuser");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
