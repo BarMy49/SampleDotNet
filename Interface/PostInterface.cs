@@ -4,6 +4,6 @@ namespace SampleDotNet.Interface
 {
     public interface PostInterface
     {
-        Task<List<Post>> GetUserPostsAsync(Guid userId);
+        Task<List<Post>> GetUserPostsAsync(Guid userId, string sortOrder);
     }
 }

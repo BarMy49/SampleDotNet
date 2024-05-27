@@ -4,6 +4,16 @@
     ViewData["Title"] = "Home Page";
 }
 
+<form asp-action="Index" method="post">
+    <select name="sortOrder">
+        <option value="newest">Najnowsze</option>
+        <option value="oldest">Najstarsze</option>
+        <option value="best">Najlepsze</option>
+        <option value="worst">Najgorsze</option>
+    </select>
+    <input type="submit" value="Sortuj" />
+</form>
+
 <div class="posts">
     @foreach (var post in Model)
     {
@@ -12,6 +22,7 @@
                 <div class="card-header">
                     <h6>Guser.@post.Guser.UserName</h6>
                     <h3>@post.Title</h3>
+                    <h6>Utworzono: @post.CreatedAt.ToString("dd-MM-yyyy")</h6>
                 </div>
                 <div class="card-body">
                     <p>@post.Description</p>

@@ -15,7 +15,7 @@ namespace SampleDotNet.Services
             _context = context;
         }
 
-        public async Task<List<Post>> GetUserPostsAsync(Guid userId)
+        public async Task<List<Post>> GetUserPostsAsync(Guid userId, string sortOrder = null)
         {
             var userGommunities = await _context.Users
                .OfType<Guser>()
@@ -30,12 +30,29 @@ namespace SampleDotNet.Services
 
             var userGommunityIds = userGommunities.Gommunities.Select(g => g.Id);
 
-            var posts = await _context.Posts
-                .Where(p => userGommunityIds.Contains(p.GommunityId))
-                .OrderByDescending(p => p.CreatedAt)
-                .ToListAsync();
+            var posts = _context.Posts
+                .Where(p => userGommunityIds.Contains(p.GommunityId));
 
-            return posts;
+            switch (sortOrder)
+            {
+                case "newest":
+                    posts = posts.OrderByDescending(p => p.CreatedAt);
+                    break;
+                case "oldest":
+                    posts = posts.OrderBy(p => p.CreatedAt);
+                    break;
+                case "best":
+                    posts = posts.OrderByDescending(p => p.Gratio);
+                    break;              
+                case "worst":
+                    posts = posts.OrderBy(p => p.Gratio);
+                    break;
+                default:
+                    posts = posts.OrderByDescending(p => p.CreatedAt);
+                    break;
+            }
+
+            return await posts.ToListAsync();
         }
     }
 

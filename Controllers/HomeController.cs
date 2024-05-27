@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SampleDotNet.Data;
 using SampleDotNet.Interface;
 using SampleDotNet.Models;
+using SampleDotNet.Services;
 using System.Diagnostics;
 
 namespace SampleDotNet.Controllers
@@ -22,7 +23,7 @@ namespace SampleDotNet.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -31,8 +32,7 @@ namespace SampleDotNet.Controllers
 
             var id = await _userManager.GetUserAsync(User);
             var guserId = Guid.Parse(id.Id);
-
-            var posts = await _postInterface.GetUserPostsAsync(guserId);
+            var posts = await _postInterface.GetUserPostsAsync(guserId, sortOrder);
 
             return View(posts);
         }
