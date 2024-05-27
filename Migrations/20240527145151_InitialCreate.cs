@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -205,7 +206,8 @@ namespace SampleDotNet.Migrations
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Gratio = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     GuserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    GommunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    GommunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

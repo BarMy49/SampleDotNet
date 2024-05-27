@@ -12,7 +12,7 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20240520164707_InitialCreate")]
+    [Migration("20240527145151_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -275,6 +275,9 @@ namespace SampleDotNet.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()

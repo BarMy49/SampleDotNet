@@ -31,6 +31,7 @@ namespace SampleDotNet.Services
                 .Include(g => g.Posts)
                 .FirstOrDefault(g => g.Id == post.GommunityId);
             post.Guser = _siteDbContext.Guser.FirstOrDefault(u => u.Id == guser.Id);
+            post.CreatedAt = DateTime.Now;
             _siteDbContext.Posts.Add(post);
             post.Gommunity.PostCount = post.Gommunity.Posts.Count;
             _siteDbContext.SaveChanges();

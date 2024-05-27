@@ -21,5 +21,7 @@ namespace SampleDotNet.Models
         [Required]
         public Guid GommunityId { get; set; }
         public virtual Gommunity Gommunity { get; set; }
+        [Required]
+        public DateTime CreatedAt { get; set; }
     }
 }
