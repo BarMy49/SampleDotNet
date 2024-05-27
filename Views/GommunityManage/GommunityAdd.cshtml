@@ -1,0 +1,16 @@
+﻿@model SampleDotNet.Models.Gommunity
+
+@{
+    ViewData["Title"] = "Add a Gommunity";
+}
+<form asp-action="Add" asp-controller="GommunityManage">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="GName" class="control-label"></label>
+        <input asp-for="GName" class="form-control" />
+        <span asp-validation-for="GName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Stwórz" class="btn btn-primary" />
+    </div>
+</form>

@@ -1,0 +1,29 @@
+﻿@model Gommunity
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = Model.GName;
+}
+
+<h2>@Model.GName</h2>
+<a class="btn btn-primary" asp-controller="Gommunity" asp-action="CreatePost" asp-route-gommunityName="@Model.GName" >Create a Post</a>
+<h3>Posts</h3>
+<div class="posts">
+@foreach(var post in Model.Posts.Reverse())
+{
+    <a href="https://google.com">
+        <div class="card">
+            <div class="card-header">
+                <h6>Guser.@post.Guser.UserName</h6>
+                <h3>@post.Title</h3>
+            </div>
+            <div class="card-body">
+                <p>@post.Description</p>
+                    @if (post.Image != null)
+                    {
+                        <img style="max-width:100%;max-height:50vh" src="data:image/jpeg;base64,@post.Image" />
+                    }
+            </div>
+        </div>
+    </a>
+}
+</div>

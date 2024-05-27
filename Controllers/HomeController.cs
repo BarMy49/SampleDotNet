@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SampleDotNet.Data;
 using SampleDotNet.Models;
 using System.Diagnostics;
-using SampleDotNet.Data;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SampleDotNet.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly UserContext _context;
+        private readonly SiteDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, UserContext context)
+        public HomeController(ILogger<HomeController> logger, SiteDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -19,23 +18,13 @@ namespace SampleDotNet.Controllers
 
         public IActionResult Index()
         {
-            var users = _context.Users.ToList();
-            return View(users);
-
+            return View();
         }
 
         public IActionResult Privacy()
         {
             return View();
         }
-
-        public IActionResult Create()
-        {
-
-
-            return View();
-        }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
