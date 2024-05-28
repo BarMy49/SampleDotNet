@@ -17,12 +17,28 @@ namespace SampleDotNet.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(string gommunityName)
+        public IActionResult Index(string gommunityName, [FromForm] string sortOrder)
         {
             var gommunity = _gommunityInterface.GetGommunityByName(gommunityName);
             if (gommunity == null)
             {
                 return NotFound();
+            }
+
+            switch (sortOrder)
+            {
+                case "newest":
+                    gommunity.Posts = gommunity.Posts.OrderByDescending(p => p.CreatedAt).ToList();
+                    break;
+                case "oldest":
+                    gommunity.Posts = gommunity.Posts.OrderBy(p => p.CreatedAt).ToList();
+                    break;
+                case "best":
+                    gommunity.Posts = gommunity.Posts.OrderByDescending(p => p.Gratio).ToList();
+                    break;
+                case "worst":
+                    gommunity.Posts = gommunity.Posts.OrderBy(p => p.Gratio).ToList();
+                    break;
             }
 
             return View("Gommunity", gommunity);
