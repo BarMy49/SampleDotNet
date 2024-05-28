@@ -1,16 +1,11 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SampleDotNet.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SampleDotNet.Models;
-using Microsoft.Extensions.DependencyInjection;
 using SampleDotNet.Interface;
+using SampleDotNet.Models;
 using SampleDotNet.Services;
-using System.Security.Policy;
-using Microsoft.Identity.Client;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,7 +82,7 @@ using (var scope = app.Services.CreateScope())
     var roles = new[] { "Owner", "Moderator", "Guser" };
     foreach (var role in roles)
     {
-        if(!await roleManager.RoleExistsAsync(role))
+        if (!await roleManager.RoleExistsAsync(role))
             await roleManager.CreateAsync(new IdentityRole(role));
     }
 }

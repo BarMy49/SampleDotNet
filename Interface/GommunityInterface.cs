@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SampleDotNet.Models;
+﻿using SampleDotNet.Models;
 
 namespace SampleDotNet.Interface
 {
@@ -7,5 +6,11 @@ namespace SampleDotNet.Interface
     {
         public Gommunity GetGommunityByName(string gommunityName);
         public void SavePost(Post post, Guser guser);
+        public Post GetPostById(Guid postId);
+        public void DeletePost(Guid postId);
+        public void SaveReaction(Reaction reaction);
+        public void DeleteReaction(Reaction reaction);
+        public void AddComment(Comment comment);
+        public void DeleteComment(Guid commentId);
     }
 }
