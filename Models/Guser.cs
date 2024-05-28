@@ -10,5 +10,6 @@ namespace SampleDotNet.Models
         public virtual ICollection<Post>? Posts { get; set; }
         public virtual ICollection<Gommunity>? Gommunities { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Reaction> Reactions { get; set; }
     }
 }

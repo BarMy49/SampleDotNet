@@ -12,6 +12,8 @@
 {
     <a asp-controller="Gommunity" asp-action="ViewPost" asp-route-postId="@post.Id">
         <div class="card">
+            <h6>Gratio: @post.Gratio</h6>
+            <h6>Comments: @post.Comments.Count()</h6>
             <div class="card-header">
                 <h6>Guser.@post.Guser.UserName</h6>
                 <h3>@post.Title</h3>

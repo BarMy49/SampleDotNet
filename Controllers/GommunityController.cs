@@ -76,5 +76,58 @@ namespace SampleDotNet.Controllers
             _gommunityInterface.DeletePost(postId);
             return View("Gommunity", gommunity);
         }
+        public async Task<IActionResult> Reaction(Guid postId, int value)
+        {
+            var guser = await _userManager.GetUserAsync(User);
+            var post = _gommunityInterface.GetPostById(postId);
+            var reaction = new Reaction
+            {
+                Guser = guser,
+                Post = post,
+                Value = value
+            };
+
+            post.Gratio = post.Gratio + value;
+            _gommunityInterface.SaveReaction(reaction);
+
+            return RedirectToAction("ViewPost", new { postId = postId });
+        }
+        public async Task<IActionResult> UndoReaction(Guid postId, int value)
+        {
+            var guser = await _userManager.GetUserAsync(User);
+            var post = _gommunityInterface.GetPostById(postId);
+            var reaction = new Reaction
+            {
+                Guser = guser,
+                Post = post,
+                Value = value
+            };
+
+            post.Gratio = post.Gratio - value;
+            _gommunityInterface.DeleteReaction(reaction);
+
+            return RedirectToAction("ViewPost", new { postId = postId });
+        }
+        public async Task<IActionResult> CreateComment([FromForm] Guid postId, [FromForm] string comment)
+        {
+            var guser = await _userManager.GetUserAsync(User);
+            var post = _gommunityInterface.GetPostById(postId);
+            var newComment = new Comment
+            {
+                Guser = guser,
+                Post = post,
+                Content = comment
+            };
+
+            post.Comments.Add(newComment);
+            _gommunityInterface.AddComment(newComment);
+
+            return RedirectToAction("ViewPost", new { postId = postId });
+        }
+        public IActionResult DeleteComment(Guid commentId, Guid postId)
+        {
+            _gommunityInterface.DeleteComment(commentId);
+            return RedirectToAction("ViewPost", new { postId = postId });
+        }
     }
 }

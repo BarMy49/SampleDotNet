@@ -12,7 +12,7 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20240527192611_InitialCreate")]
+    [Migration("20240528171816_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -277,7 +277,7 @@ namespace SampleDotNet.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
@@ -342,6 +342,31 @@ namespace SampleDotNet.Migrations
                     b.HasIndex("GuserId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("SampleDotNet.Models.Reaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GuserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
@@ -427,13 +452,13 @@ namespace SampleDotNet.Migrations
                     b.HasOne("SampleDotNet.Models.Guser", "Guser")
                         .WithMany("Comments")
                         .HasForeignKey("GuserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SampleDotNet.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Guser");
@@ -460,6 +485,25 @@ namespace SampleDotNet.Migrations
                     b.Navigation("Guser");
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Reaction", b =>
+                {
+                    b.HasOne("SampleDotNet.Models.Guser", "Guser")
+                        .WithMany("Reactions")
+                        .HasForeignKey("GuserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SampleDotNet.Models.Post", "Post")
+                        .WithMany("Reactions")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Guser");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
                 {
                     b.Navigation("Posts");
@@ -468,6 +512,8 @@ namespace SampleDotNet.Migrations
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Reactions");
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
@@ -475,6 +521,8 @@ namespace SampleDotNet.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Posts");
+
+                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }
