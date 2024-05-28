@@ -12,8 +12,8 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20240527145151_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240528124227_InnitSchema")]
+    partial class InnitSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,6 +270,36 @@ namespace SampleDotNet.Migrations
                     b.ToTable("Gommunities");
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Message", b =>
+                {
+                    b.Property<Guid>("messageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("messageId");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
                 {
                     b.Property<Guid>("Id")
@@ -389,6 +419,25 @@ namespace SampleDotNet.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Message", b =>
+                {
+                    b.HasOne("SampleDotNet.Models.Guser", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SampleDotNet.Models.Guser", "Sender")
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
                 {
                     b.HasOne("SampleDotNet.Models.Gommunity", "Gommunity")
@@ -416,6 +465,10 @@ namespace SampleDotNet.Migrations
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
                 {
                     b.Navigation("Posts");
+
+                    b.Navigation("ReceivedMessages");
+
+                    b.Navigation("SentMessages");
                 });
 #pragma warning restore 612, 618
         }

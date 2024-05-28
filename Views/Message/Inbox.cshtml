@@ -1,0 +1,47 @@
+﻿@model List<SampleDotNet.Models.Message>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Guser> _userManager
+
+@{
+    ViewData["Title"] = "Inbox";
+}
+
+<h2>Inbox</h2>
+
+<form asp-action="Index" method="post">
+    <select name="sortOrder">
+        <option value="newest">Najnowsze</option>
+        <option value="oldest">Najstarsze</option>
+    </select>
+    <input type="submit" value="Sortuj" />
+</form>
+
+<div class="messages">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sender</th>
+                <th>Content</th>
+                <th>Timestamp</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var message in Model)
+                {
+                    var senderUsername = await _userManager.GetUserNameAsync(message.Sender);
+                    <tr>
+                        <td>@senderUsername</td>
+                        <td>@message.Content</td>
+                        <td>@message.Timestamp.ToString("g")</td>
+                        <td>
+                            <a asp-action="SendMessage" asp-controller="Message" asp-route-receiverUsername="@senderUsername" class="btn btn-primary">Odpowiedz</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

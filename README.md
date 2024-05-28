@@ -1,5 +1,5 @@
 # SampleDotNet
 .NET forum web app
 # TODO
-	- sortowanie postów po dacie, garmy z użycie ViewBag
-	- czat
+	- sortowanie postów po dacie i garmie (done)
+	- czat - tylko dla zalogowanych

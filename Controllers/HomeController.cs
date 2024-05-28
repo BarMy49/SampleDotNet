@@ -25,7 +25,7 @@ namespace SampleDotNet.Controllers
 
         public async Task<IActionResult> Index(string sortOrder)
         {
-            if (!User.Identity.IsAuthenticated)
+            if (User?.Identity?.IsAuthenticated != true)
             {
                 return View("Hello");
             }
