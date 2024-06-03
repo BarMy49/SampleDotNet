@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SampleDotNet.Migrations
 {
     /// <inheritdoc />
-    public partial class InnitSchema : Migration
+    public partial class afsd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -180,7 +180,8 @@ namespace SampleDotNet.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SenderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -234,7 +235,7 @@ namespace SampleDotNet.Migrations
                     Gratio = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     GuserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GommunityId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
                 },
                 constraints: table =>
                 {
@@ -251,6 +252,59 @@ namespace SampleDotNet.Migrations
                         principalTable: "Gommunities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GuserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_AspNetUsers_GuserId",
+                        column: x => x.GuserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Value = table.Column<int>(type: "int", nullable: false),
+                    GuserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reactions_AspNetUsers_GuserId",
+                        column: x => x.GuserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reactions_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -295,6 +349,16 @@ namespace SampleDotNet.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_GuserId",
+                table: "Comments",
+                column: "GuserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_PostId",
+                table: "Comments",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GommunityGuser_GusersId",
                 table: "GommunityGuser",
                 column: "GusersId");
@@ -318,6 +382,16 @@ namespace SampleDotNet.Migrations
                 name: "IX_Posts_GuserId",
                 table: "Posts",
                 column: "GuserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reactions_GuserId",
+                table: "Reactions",
+                column: "GuserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reactions_PostId",
+                table: "Reactions",
+                column: "PostId");
         }
 
         /// <inheritdoc />
@@ -339,16 +413,22 @@ namespace SampleDotNet.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "GommunityGuser");
 
             migrationBuilder.DropTable(
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Reactions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

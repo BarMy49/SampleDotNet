@@ -12,8 +12,8 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    [Migration("20240528124227_InnitSchema")]
-    partial class InnitSchema
+    [Migration("20240603171259_afsd")]
+    partial class afsd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,6 +249,37 @@ namespace SampleDotNet.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("GuserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -280,6 +311,9 @@ namespace SampleDotNet.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ReceiverId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -307,7 +341,9 @@ namespace SampleDotNet.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -339,6 +375,31 @@ namespace SampleDotNet.Migrations
                     b.HasIndex("GuserId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("SampleDotNet.Models.Reaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GuserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
@@ -419,6 +480,25 @@ namespace SampleDotNet.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Comment", b =>
+                {
+                    b.HasOne("SampleDotNet.Models.Guser", "Guser")
+                        .WithMany("Comments")
+                        .HasForeignKey("GuserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SampleDotNet.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Guser");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Message", b =>
                 {
                     b.HasOne("SampleDotNet.Models.Guser", "Receiver")
@@ -457,14 +537,44 @@ namespace SampleDotNet.Migrations
                     b.Navigation("Guser");
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Reaction", b =>
+                {
+                    b.HasOne("SampleDotNet.Models.Guser", "Guser")
+                        .WithMany("Reactions")
+                        .HasForeignKey("GuserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SampleDotNet.Models.Post", "Post")
+                        .WithMany("Reactions")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Guser");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
                 {
                     b.Navigation("Posts");
                 });
 
+            modelBuilder.Entity("SampleDotNet.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Reactions");
+                });
+
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Posts");
+
+                    b.Navigation("Reactions");
 
                     b.Navigation("ReceivedMessages");
 
