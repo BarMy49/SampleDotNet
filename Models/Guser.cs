@@ -12,5 +12,8 @@ namespace SampleDotNet.Models
 
         public virtual ICollection<Message>? SentMessages { get; set; }
         public virtual ICollection<Message>? ReceivedMessages { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Reaction> Reactions { get; set; }
     }
 }
