@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SampleDotNet.Data;
 
@@ -11,9 +12,11 @@ using SampleDotNet.Data;
 namespace SampleDotNet.Migrations
 {
     [DbContext(typeof(SiteDbContext))]
-    partial class SiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240528185445_MarkAsRead")]
+    partial class MarkAsRead
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,37 +249,6 @@ namespace SampleDotNet.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SampleDotNet.Models.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<string>("GuserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuserId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -338,9 +310,7 @@ namespace SampleDotNet.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -372,31 +342,6 @@ namespace SampleDotNet.Migrations
                     b.HasIndex("GuserId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("SampleDotNet.Models.Reaction", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("GuserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GuserId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Reactions");
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
@@ -477,7 +422,6 @@ namespace SampleDotNet.Migrations
                         .IsRequired();
                 });
 
-
             modelBuilder.Entity("SampleDotNet.Models.Message", b =>
                 {
                     b.HasOne("SampleDotNet.Models.Guser", "Receiver")
@@ -495,24 +439,6 @@ namespace SampleDotNet.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-
-            modelBuilder.Entity("SampleDotNet.Models.Comment", b =>
-                {
-                    b.HasOne("SampleDotNet.Models.Guser", "Guser")
-                        .WithMany("Comments")
-                        .HasForeignKey("GuserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SampleDotNet.Models.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Guser");
-
-                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("SampleDotNet.Models.Post", b =>
@@ -534,48 +460,18 @@ namespace SampleDotNet.Migrations
                     b.Navigation("Guser");
                 });
 
-            modelBuilder.Entity("SampleDotNet.Models.Reaction", b =>
-                {
-                    b.HasOne("SampleDotNet.Models.Guser", "Guser")
-                        .WithMany("Reactions")
-                        .HasForeignKey("GuserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SampleDotNet.Models.Post", "Post")
-                        .WithMany("Reactions")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Guser");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("SampleDotNet.Models.Gommunity", b =>
                 {
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("SampleDotNet.Models.Post", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Reactions");
-                });
-
             modelBuilder.Entity("SampleDotNet.Models.Guser", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Posts");
 
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("SentMessages");
-
-                    b.Navigation("Reactions");
                 });
 #pragma warning restore 612, 618
         }
