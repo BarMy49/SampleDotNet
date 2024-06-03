@@ -2,4 +2,4 @@
 .NET forum web app
 # TODO
 	- sortowanie postów po dacie i garmie (done)
-	- czat - tylko dla zalogowanych
+	- wysyłanie wiadomści i oznaczanie jako przeczytane (done)

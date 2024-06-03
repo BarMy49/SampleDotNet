@@ -5,6 +5,11 @@
 @{
     ViewData["Title"] = "Inbox";
 }
+<style>
+    .read {
+        background-color: #f0f0f0;
+    }
+</style>
 
 <h2>Inbox</h2>
 
@@ -32,12 +37,16 @@
                 @foreach (var message in Model)
                 {
                     var senderUsername = await _userManager.GetUserNameAsync(message.Sender);
-                    <tr>
+                    <tr class="@(message.IsRead ? "read" : "unread")">
                         <td>@senderUsername</td>
                         <td>@message.Content</td>
                         <td>@message.Timestamp.ToString("g")</td>
                         <td>
-                            <a asp-action="SendMessage" asp-controller="Message" asp-route-receiverUsername="@senderUsername" class="btn btn-primary">Odpowiedz</a>
+                            <a asp-action="SendMessage" asp-controller="Message" asp-route-receiverUsername="@senderUsername" class="btn btn-primary">Reply</a>
+                            <form asp-action="MarkAsRead" asp-controller="Message" method="post" style="display: inline;">
+                                <input type="hidden" name="messageId" value="@message.messageId" />
+                                <input type="submit" value="Mark as Read" class="btn btn-secondary" />
+                            </form>
                         </td>
                     </tr>
                 }

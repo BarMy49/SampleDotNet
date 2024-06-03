@@ -24,5 +24,7 @@ namespace SampleDotNet.Models
         public string ReceiverId { get; set; }
         [ForeignKey("ReceiverId")]
         public virtual Guser Receiver { get; set; }
+
+        public bool IsRead { get; set; }
     }
 }

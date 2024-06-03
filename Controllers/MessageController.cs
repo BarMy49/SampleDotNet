@@ -73,5 +73,12 @@ namespace SampleDotNet.Controllers
 
             return View("Inbox", messages);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkAsRead(Guid messageId)
+        {
+            await _messageService.MarkAsReadAsync(messageId);
+            return RedirectToAction("Index");
+        }
     }
 }

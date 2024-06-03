@@ -31,6 +31,12 @@ namespace SampleDotNet.Controllers
             }
 
             var id = await _userManager.GetUserAsync(User);
+
+            if(id == null)
+            {
+                return View("Hello");
+            }
+
             var guserId = Guid.Parse(id.Id);
             var posts = await _postInterface.GetUserPostsAsync(guserId, sortOrder);
 
