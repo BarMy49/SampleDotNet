@@ -32,6 +32,18 @@
                                 }
                             </ul>
                         </li>
+                        <li class="nev-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" data-bs-toggle="dropdown">Messages</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Message" asp-action="Inbox">Inbox</a>
+                                </li>                                
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Message" asp-action="SendMessage">Send a Message</a>
+                                </li>
+
+                            </ul>
+                        </li>
                         @if (User.IsInRole("Owner"))
                         {
                             <li class="nav-item">

@@ -11,11 +11,16 @@ namespace SampleDotNet.Data
         }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Gommunity> Gommunities { get; set; }
+        
+        public DbSet<Message> Messages { get; set; }
+        
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
             builder.Entity<Guser>(c =>
             {
                 c.Property(u => u.Garma).HasDefaultValue(1);
@@ -29,6 +34,23 @@ namespace SampleDotNet.Data
                     .WithOne(u => u.Guser)
                         .OnDelete(DeleteBehavior.Cascade);
             });
+
+            builder.Entity<Post>()
+                .Property(e => e.Gratio)
+                .HasDefaultValue(1);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Sender)
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            builder.Entity<Message>()
+                .HasOne(m => m.Receiver)
+                .WithMany(u => u.ReceivedMessages)
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<Post>(e => 
             {
                 e.Property(p => p.Gratio).HasDefaultValue(1);
