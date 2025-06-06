@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Hello";
+    string selector = "";
+    Random random = new Random();
+    int rnd = random.Next(1, 6);
+    switch (rnd)
+    {
+        case 1:
+            selector = "welcome1";
+            break;
+
+        case 2:
+            selector = "welcome2";
+            break;
+
+        case 3:
+            selector = "welcome3";
+            break;
+
+        case 4:
+            selector = "welcome4";
+            break;
+
+        case 5:
+            selector = "welcome5";
+            break;
+    }
+}
+
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Guser> SignInManager
+@inject UserManager<Guser> UserManager
+
+<div class="text-center">
+    <div class="welcome-sign">
+        <h1 class="@selector">WELCOME</h1>
+    </div>
+    <h2>- - -</h2>
+    <h2 class="subtext">Please log in or create a new account</h2>
+    <h2 class="subtext">to begin your journey now!</h2>
+    <h2>- - -</h2>
+    <a class="butn" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    <a class="butn" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+</div>

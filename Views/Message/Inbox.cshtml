@@ -1,0 +1,56 @@
+﻿@model List<SampleDotNet.Models.Message>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Guser> _userManager
+
+@{
+    ViewData["Title"] = "Inbox";
+}
+<style>
+    .read {
+        background-color: #f0f0f0;
+    }
+</style>
+
+<h2>Inbox</h2>
+
+<form asp-action="Index" method="post">
+    <select class="btn"  name="sortOrder">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+    </select>
+    <input class="btn" type="submit" value="Sort" />
+</form>
+
+<div class="messages">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sender</th>
+                <th>Content</th>
+                <th>Timestamp</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var message in Model)
+                {
+                    var senderUsername = await _userManager.GetUserNameAsync(message.Sender);
+                    <tr class="@(message.IsRead ? "read" : "unread")">
+                        <td>@senderUsername</td>
+                        <td>@message.Content</td>
+                        <td>@message.Timestamp.ToString("g")</td>
+                        <td>
+                            <a asp-action="SendMessage" asp-controller="Message" asp-route-receiverUsername="@senderUsername" class="btn btn-primary">Reply</a>
+                            <form asp-action="MarkAsRead" asp-controller="Message" method="post" style="display: inline;">
+                                <input type="hidden" name="messageId" value="@message.messageId" />
+                                <input type="submit" value="Mark as Read" class="btn btn-secondary" />
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

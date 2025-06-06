@@ -1,0 +1,58 @@
+﻿@model GommunityViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Guser> _userManager
+@{
+    ViewData["Title"] = "Gommunities";
+    var guser = await _userManager.GetUserAsync(User);
+}
+
+<h1>Gommunities</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.ActionLink("Name", "GommunityList", new { sortOrder = ViewBag.NameSort })</th>
+            <th>@Html.ActionLink("Posts", "GommunityList", new { sortOrder = ViewBag.PostsSort })</th>
+            <th>@Html.ActionLink("Gusers", "GommunityList", new { sortOrder = ViewBag.GusersSort })</th>
+            @if (guser != null)
+            {
+                <th></th> 
+                @* Column for join buttons *@
+                @if (await _userManager.IsInRoleAsync(guser, "Owner")) {
+                    <th></th>
+                    @* Column for edit buttons *@
+                } 
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var gommunity in Model.Gommunities)
+        {
+            <tr>
+                <td>@Html.ActionLink(gommunity.GName, "Redirect", new { gommunityName = gommunity.GName }, null)</td>
+                <td>@Html.DisplayFor(model => gommunity.PostCount)</td>
+                <td>@Html.DisplayFor(model => gommunity.GuserCount)</td>
+                @if (guser != null)
+                {
+                    @if (gommunity.Gusers.Contains(guser))
+                    {
+                        <td>
+                            <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="Leave" asp-route-id="@gommunity.Id">Leave</a>
+                        </td>
+                    } else
+                    {
+                        <td>
+                            <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="Join" asp-route-id="@gommunity.Id">Join</a>
+                        </td>
+                    }
+                    @if (await _userManager.IsInRoleAsync(guser, "Owner"))
+                    {
+                        <td>
+                            <a class="btn btn-primary" asp-controller="GommunityManage" asp-action="GommunityEdit" asp-route-id="@gommunity.Id">Edit</a>
+                        </td>
+                    }
+                }
+            </tr>
+        }
+    </tbody>
+</table>

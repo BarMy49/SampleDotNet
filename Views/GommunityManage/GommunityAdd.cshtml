@@ -1,0 +1,20 @@
+﻿@model SampleDotNet.Models.Gommunity
+
+@{
+    ViewData["Title"] = "Add a Gommunity";
+}
+<form asp-action="Add" asp-controller="GommunityManage" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="GName" class="control-label"></label>
+        <input required asp-for="GName" class="form-control" />
+        <span asp-validation-for="GName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Banner">Banner</label>
+        <input type="file" id="Banner" name="Banner" accept="image/png, image/jpeg" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Stwórz" class="btn btn-primary" />
+    </div>
+</form>

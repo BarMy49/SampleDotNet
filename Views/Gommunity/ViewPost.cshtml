@@ -1,0 +1,114 @@
+﻿@model SampleDotNet.Models.Post
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Guser> _userManager
+@inject SignInManager<Guser> SignInManager
+@{
+    ViewBag.Title = Model.Title;
+    var guser = await _userManager.GetUserAsync(User);
+}
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="card">
+        <h6 class="btn" style="padding: 5px">@Html.ActionLink(String.Format("Gommunity/{0}", Model.Gommunity.GName), "Redirect", "GommunityManage", new { gommunityName = Model.Gommunity.GName }, null)</h6>
+
+        <div class="card-header">
+            <h6>
+                <span style="opacity: 0.2">Guser.</span>
+                <span style="color:white">@Model.Guser.UserName</span>
+            </h6>
+            <h3>
+                <span style="opacity: 0.2">Title.</span>
+                <span style="color:white">@Model.Title</span>
+            </h3>
+        </div>
+        <div class="card-body">
+            <p>
+                <span style="opacity: 0.2">Desc.</span>
+                <span style="color:white">@Model.Description</span>
+            </p>
+            @if (Model.Image != null)
+            {
+                <img style="max-width:100%;max-height:50vh" src="data:image/jpeg;base64,@Model.Image" />
+            }
+        </div>
+        <div class="card-footer">
+            
+            <h3 style="font-family: Adumu; display:inline">
+                <span style="opacity:0.2; font-size:1rem;">Gratio.</span>
+                <span style="color:white">@Model.Gratio</span>
+            </h3>
+
+            @if (Model.Reactions.Any(r => r.Value == -1 && r.Guser.Id == guser.Id)) { }
+            else
+            {
+                @if (Model.Reactions.Any(r => r.Value == 1 && r.Guser.Id == guser.Id))
+                {
+                    <h4 class="btn btn-secondary" style="font-size:2rem; color:#ff6363; display:inline">@Html.ActionLink("↩️", "UndoReaction", "Gommunity", new { postId = Model.Id, value = 1 })</h4>
+                }
+                else
+                {
+                    <h4 class="btn btn-secondary" style="font-size:2rem; color:#ffb400; display:inline">@Html.ActionLink("👍", "Reaction", "Gommunity", new { postId = Model.Id, value = 1 })</h4>
+                }
+            }
+
+            @if (Model.Reactions.Any(r => r.Value == 1 && r.Guser.Id == guser.Id)) { }
+            else
+            {
+                @if (Model.Reactions.Any(r => r.Value == -1 && r.Guser.Id == guser.Id))
+                {
+                    <h4 class="btn btn-secondary" style="font-size:2rem; color:#ff6363; display:inline">@Html.ActionLink("↩️", "UndoReaction", "Gommunity", new { postId = Model.Id, value = -1 })</h4>
+                }
+                else
+                {
+                    <h4 class="btn btn-secondary" style="font-size:2rem; color:#ffb400; display:inline">@Html.ActionLink("👎", "Reaction", "Gommunity", new { postId = Model.Id, value = -1 })</h4>
+                }
+            }
+
+            @if (guser != null && (await _userManager.IsInRoleAsync(guser, "Owner") || await _userManager.IsInRoleAsync(guser, "Moderator") || guser.Id == Model.Guser.Id))
+            {
+                <button class="btn btn-danger" style="display: inline; padding: 10px;">@Html.ActionLink("Delete", "Delete", "Gommunity", new { postId = Model.Id })</button>
+            }
+            <h2>Create a Comment</h2>
+            <form asp-action="CreateComment" asp-controller="Gommunity">
+                <input type="hidden" name="postId" value="@Model.Id" />
+                <div class="form-group">
+                    <label for="comment">Content</label>
+                    <input name="comment" class="form-control" />
+                </div>
+                <input type="submit" value="💬Comment" />
+            </form>
+
+            @foreach(var comment in Model.Comments)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h6>Guser.@comment.Guser.UserName</h6>
+
+                        @if (guser != null && (await _userManager.IsInRoleAsync(guser, "Owner") || await _userManager.IsInRoleAsync(guser, "Moderator") || guser.Id == comment.Guser.Id))
+                        {
+                            <button class="btn btn-danger" style="text-decoration: none">@Html.ActionLink("Delete", "DeleteComment", "Gommunity", new { commentId = comment.Id, postId = Model.Id })</button>
+                        }
+
+                    </div>
+                    <div class="card-body">
+                        <p style="color:white">@comment.Content</p>
+                    </div>
+                    <div class="card-footer">
+                        <h6 style="color:white">@comment.CreatedAt</h6>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h2>You are not logged in.</h2>
+        <h2>Please, log in to be able to view posts and engage with them. :)</h2>
+        <a class="butn" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="butn" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </div>
+}
+

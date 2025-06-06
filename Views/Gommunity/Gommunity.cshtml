@@ -1,0 +1,60 @@
+﻿@model Gommunity
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Guser> SignInManager
+@inject UserManager<Guser> UserManager
+@{
+    ViewData["Title"] = Model.GName;
+}
+
+<div class="posts">
+    <div class="big-title" style='background-image: url("data:image/jpeg;base64,@Model.Banner"); height:10vh; background-size:contain;'>
+        <h1>@Model.GName</h1>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <a class="butn" asp-controller="Gommunity" asp-action="CreatePost" asp-route-gommunityName="@Model.GName">Create a Post</a>
+        <h3 style="opacity: 0">- - -</h3>
+    }
+    <h3>Posts</h3>
+    <form asp-action="Index" asp-controller="Gommunity" method="post">
+        <input type="hidden" name="gommunityName" value="@Model.GName" />
+        <select class="btn" name="sortOrder">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="best">Best</option>
+            <option value="worst">Worst</option>
+        </select>
+        <input class="btn" type="submit" value="Sort" />
+    </form>
+    @foreach (var post in Model.Posts)
+    {
+        <a asp-controller="Gommunity" asp-action="ViewPost" asp-route-postId="@post.Id" style="text-decoration: none">
+            <div class="card">
+                <div class="card-header">
+                    <h6>
+                        <span style="opacity: 0.2">Guser.</span>
+                        <span style="color:white">@post.Guser.UserName</span>
+                    </h6>
+                    <h3>
+                        <span style="opacity: 0.2">Title.</span>
+                        <span style="color:white">@post.Title</span>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <span style="opacity: 0.2">Desc.</span>
+                        <span style="color:white">@post.Description</span>
+                    </p>
+                    @if (post.Image != null)
+                    {
+                        <img style="max-width:100%;max-height:50vh" src="data:image/jpeg;base64,@post.Image" />
+                    }
+                </div>
+                <h6>
+                    <span style="color:white; padding: 3px;">Gratio. @post.Gratio</span>
+                    <span style="color:white; padding: 3px;">Comments. @post.Comments.Count()</span>
+                </h6>
+            </div>
+        </a>
+    }
+</div>

@@ -1,0 +1,284 @@
+﻿body, html {
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    font-family: Adumu;
+    text-decoration: none;
+}
+
+body {
+    padding-top: 30px;
+    background: linear-gradient(to right, #001e26, #24444d, #001e26);
+}
+
+.navbar-brand {
+    font-family: Adumu !important;
+    background-image: url("../orb2.png") !important;
+    background-size: cover !important;
+    background-position: center !important;
+    padding: 2px 5px !important;
+    color: #fff !important;
+}
+.nav-item dropdown {
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    background-color: #333333;
+    cursor: pointer;
+}
+    .nav-item dropdown:hover {
+        background-color: #373737;
+    }
+
+    .nav-item dropdown:active {
+        background-color: #414141;
+    }
+
+
+.nav-item {
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    background-color: #333333;
+    cursor: pointer;
+}
+    .nav-item:hover {
+        background-color: #373737;
+    }
+    .nav-item:active {
+        background-color: #414141;
+    }
+
+.container-fluid {
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+}
+
+    .container-fluid nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+        .container-fluid nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+            .container-fluid nav ul li a {
+                color: white;
+                text-decoration: none;
+            }
+
+.text-center {
+    margin-top: 200px;
+}
+
+.welcome-sign {
+    color: #fff1b9;
+    font-family: Magnifico;
+}
+
+.welcome1 {
+    font-size: 8rem;
+    animation: num1 3s infinite;
+    text-shadow: 1px 1px 20px #ffdf63, -1px -1px 10px #ffb400;
+}
+@keyframes num1 {
+
+    0% {
+        transform: scale(0.95);
+    }
+
+    50% {
+        transform: scale(1.05)
+    }
+
+    100% {
+        transform: scale(0.95);
+    }
+}
+
+.welcome2 {
+    font-size: 8rem;
+    animation: num2 3s infinite;
+    text-shadow: 1px 1px 20px #ff6363, -1px -1px 10px #ffb400;
+}
+@keyframes num2 {
+
+    0% {
+        transform: rotate(-2deg);
+    }
+
+    50% {
+        transform: rotate(2deg);
+    }
+
+    100% {
+        transform: rotate(-2deg);
+    }
+}
+
+.welcome3 {
+    font-size: 8rem;
+    animation: num3 3s infinite;
+    text-shadow: 1px 1px 20px #637eff, -1px -1px 10px #ffb400;
+}
+
+@keyframes num3 {
+
+    0% {
+        transform: scaleX(0.9);
+    }
+
+    50% {
+        transform: scaleX(1.1);
+    }
+
+    100% {
+        transform: scaleX(0.9);
+    }
+}
+
+.welcome4 {
+    font-size: 8rem;
+    animation: num4 3s infinite;
+    text-shadow: 1px 1px 20px #6eff63, -1px -1px 10px #ffb400;
+}
+
+@keyframes num4 {
+
+    0% {
+        transform: scaleY(0.9);
+    }
+
+    50% {
+        transform: scaleY(1.1);
+    }
+
+    100% {
+        transform: scaleY(0.9);
+    }
+}
+
+.welcome5 {
+    font-size: 8rem;
+    animation: num5 3s infinite;
+    text-shadow: 1px 1px 20px #f463ff, -1px -1px 10px #ffb400;
+}
+
+@keyframes num5 {
+
+    0% {
+        transform: translateY(5px);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+
+    100% {
+        transform: translateY(5px);
+    }
+}
+
+.subtext {
+    font-family:OpenSansRegular;
+    font-size: 2rem;
+    color: #ffffff;
+    animation: fadein 2s normal;
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    30% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+.butn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: groove;
+    color: #fff;
+    background-color: #b58900;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+
+    .butn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px #999;
+    }
+
+    .butn:active {
+        background-color: #ffdf63;
+        box-shadow: 0 2px #666;
+        transform: translateY(7px);
+    }
+
+.posts {
+    margin-top: 20px;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    opacity: 0.9 !important;
+}
+
+.card {
+    margin: 20px 20px;
+    outline: groove;
+    animation: fadein 0.5s normal;
+}
+
+.big-title {
+    margin: 20px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Adumu;
+    font-size: 20rem;
+    color: #ffb400 !important;
+    text-shadow: 2px 2px 20px black;
+}
+
+.read {
+    padding: 10px;
+    opacity: 0.7;
+}
+
+.unread {
+    opacity: 1;
+}
+
+.btn>a {
+    text-decoration: none;
+    color: white;
+}
+
+.card-body {
+    background-color: #333333ab;
+}

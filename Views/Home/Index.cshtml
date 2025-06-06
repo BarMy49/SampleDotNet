@@ -1,0 +1,82 @@
+﻿@model List<SampleDotNet.Models.Post>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<Guser> SignInManager
+@inject UserManager<Guser> UserManager
+@{
+    ViewData["Title"] = "Home Page";
+    string selector = "";
+    Random random = new Random();
+    int rnd = random.Next(1, 6);
+    switch (rnd)
+    {
+        case 1:
+            selector = "welcome1";
+            break;
+
+        case 2:
+            selector = "welcome2";
+            break;
+
+        case 3:
+            selector = "welcome3";
+            break;
+
+        case 4:
+            selector = "welcome4";
+            break;
+
+        case 5:
+            selector = "welcome5";
+            break;
+    }
+}
+<div class="text-center">
+    <div class="welcome-sign">
+        <h3 class="@selector">WELCOME</h3>
+        <h5 class="@selector" style="font-size: 5rem">@UserManager.GetUserName(User)!</h5>
+    </div>
+</div>
+<div class="posts">
+    <h3>Posts</h3>
+    <form asp-action="Index" method="post">
+        <select class="btn" name="sortOrder">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="best">Best</option>
+            <option value="worst">Worst</option>
+        </select>
+        <input class="btn" type="submit" value="Sort" />
+    </form>
+    @foreach (var post in Model)
+    {
+        <a asp-controller="Gommunity" asp-action="ViewPost" asp-route-postId="@post.Id" style="text-decoration: none">
+            <div class="card">
+                <div class="card-header">
+                    <h6>
+                        <span style="opacity: 0.2">Guser.</span>
+                        <span style="color:white">@post.Guser.UserName</span>
+                    </h6>
+                    <h3>
+                        <span style="opacity: 0.2">Title.</span>
+                        <span style="color:white">@post.Title</span>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <span style="opacity: 0.2">Desc.</span>
+                        <span style="color:white">@post.Description</span>
+                    </p>
+                    @if (post.Image != null)
+                    {
+                        <img style="max-width:100%;max-height:50vh" src="data:image/jpeg;base64,@post.Image" />
+                    }
+                </div>
+                <h6>
+                    <span style="color:white; padding: 3px;">Gratio: @post.Gratio</span>
+                    <span style="color:white; padding: 3px;">Comments: @post.Comments.Count()</span>
+                </h6>
+            </div>
+        </a>
+    }
+</div>
